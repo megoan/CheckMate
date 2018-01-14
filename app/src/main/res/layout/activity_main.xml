@@ -1,0 +1,74 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.user.check_mate.controller.MainActivity"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/refreshGPS"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <Button
+            android:id="@+id/refreshGPSButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Refresh GPS to BEGIN"
+            android:drawableRight="@drawable/ic_refresh"/>
+    </FrameLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/location_background"
+        android:paddingTop="10dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_location2"/>
+        <TextView
+            android:id="@+id/locationText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="My Location..."
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"/>
+        <ImageView
+            android:id="@+id/btnGetLoc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_refresh"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"/>
+    </LinearLayout>
+    <Button
+        android:id="@+id/addEvent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="add new event in my Location"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:background="@drawable/trans_rectangle_purple"
+        android:layout_gravity="center"
+        android:textColor="@color/white"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:shadowDy="2"
+        android:shadowColor="@color/black"
+        android:shadowDx="2"
+        android:shadowRadius="5"
+        android:clickable="true"/>
+<android.support.v7.widget.RecyclerView
+    android:id="@+id/events"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+</android.support.v7.widget.RecyclerView>
+</LinearLayout>

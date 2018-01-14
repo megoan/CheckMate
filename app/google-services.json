@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "64937251677",
+    "firebase_url": "https://check-mate-ec6d2.firebaseio.com",
+    "project_id": "check-mate-ec6d2",
+    "storage_bucket": "check-mate-ec6d2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:64937251677:android:8050ffcab4b67f46",
+        "android_client_info": {
+          "package_name": "com.example.user.check_mate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "64937251677-2j9tcgsvmel8ko5bq84n2v0uphhef7li.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.user.check_mate",
+            "certificate_hash": "ff4407cc02b25ccd8dbeb64a1ff8f028b261c515"
+          }
+        },
+        {
+          "client_id": "64937251677-ppcqgqme8n43if5ki7clv51nvpi9riga.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmRiJvbSb5VdmYypLefoQqD8-IKBdrVc4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "64937251677-ppcqgqme8n43if5ki7clv51nvpi9riga.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    >
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Event"
+        android:layout_gravity="center"
+        android:padding="10dp"
+        android:textSize="20sp"/>
+
+    <EditText
+        android:id="@+id/eventNameView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Event name"
+        android:padding="5dp"/>
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="please don't add unnecessary events!"
+        android:padding="10dp"
+        android:textColor="@color/black"/>
+
+    <Button
+        android:id="@+id/addEventbutton"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:text="Add your Event"
+        android:padding="15dp"
+        android:textColor="@color/white"
+        android:background="@drawable/trans_rectangle_purple"/>
+</LinearLayout>

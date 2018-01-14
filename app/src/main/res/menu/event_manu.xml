@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/profile_item"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_user"
+        android:title="Profile"
+        app:showAsAction="never">
+    </item>
+    <item
+        android:id="@+id/refresh_list"
+        android:icon="@drawable/ic_refresh_white"
+        android:orderInCategory="100"
+        android:title="Refresh list"></item>
+</menu>
