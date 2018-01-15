@@ -263,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 myEvents = new Events();
-                if (myLocation != null) {
+
                     myEvents.setmMyLocation(mLocation);
                     AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
                     View mView = getLayoutInflater().inflate(R.layout.add_event_dialog, null);
@@ -308,17 +308,7 @@ public class MainActivity extends AppCompatActivity {
                     alertDialog = mBuilder.create();
                     alertDialog.show();
 
-                } else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                    builder.setMessage("can't add event if we don't know where you are! can we now?")
-                            .setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                                public void onClick(final DialogInterface dialog, final int id) {
-                                }
-                            });
 
-                    final AlertDialog alert = builder.create();
-                    alert.show();
-                }
 
             }
         });
@@ -327,7 +317,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void setGPS()
     {
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
     }
 
     @Override
@@ -349,15 +339,11 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
             case R.id.refresh_list:{
-                if (mLocation!=null && mLocation.getCountry()!=null && mLocation.getCity()!=null) {
-                    foo(MainActivity.this);
+                setGPS();
                     //initializeRecyclerView();
                 }
-                else {
-                    Toast.makeText(this, "your GPS is still loading", Toast.LENGTH_LONG).show();
-                }
+
                 break;
-            }
         }
         return super.onOptionsItemSelected(item);
     }
