@@ -5,15 +5,20 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -85,10 +90,118 @@ public class MainActivity extends AppCompatActivity {
 
     DatabaseReference eventsDataBase;
 
+    LocationManager locationManager;
+    LocationListener locationListener;
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode)
+        {
+            case 10:
+            {
+                if(grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                    setGPS();
+                }
+            }
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                makeUseOfNewLocation(location);
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+                Intent intent=new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }
+        };
+        if (Build.VERSION_CODES.M<=Build.VERSION.SDK_INT) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                requestPermissions(new String[]
+                        {
+                                Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION,
+                                Manifest.permission.INTERNET
+                        },10);
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+        }
+        else {
+            setGPS();
+        }
+
+
+        //locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+       /* LocationManager lm = (LocationManager) this.getSystemService(LOCATION_SERVICE);
+        boolean isGPSEnabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        if(!isGPSEnabled)
+        {
+            buildAlertMessageNoGps();
+        }
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+        // Define a listener that responds to location updates
+        LocationListener locationListener = new LocationListener() {
+            public void onLocationChanged(Location location) {
+                // Called when a new location is found by the network location provider.
+                makeUseOfNewLocation(location);
+            }
+
+            public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+            public void onProviderEnabled(String provider) {}
+
+            public void onProviderDisabled(String provider) {}
+        };
+
+// Register the listener with the Location Manager to receive location updates
+        if (ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_FINE_LOCATION ) == PackageManager.PERMISSION_GRANTED)
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);*/
+        
+        
+        
+        
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
         if (id != null) {
@@ -102,36 +215,26 @@ public class MainActivity extends AppCompatActivity {
         locationText = findViewById(R.id.locationText);
         addEventButton = findViewById(R.id.addEvent);
         frameLayout=findViewById(R.id.refreshGPS);
-        refreshGPSButton=findViewById(R.id.refreshGPSButton);
         eventRecyclerView.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(MainActivity.this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         eventRecyclerView.setLayoutManager(linearLayoutManager);
         ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 123);
-        openGPS();
+        //openGPS();
         btnLoc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openGPS();
+                //openGPS();
                 if (myLocation != null) {
                     frameLayout.setVisibility(View.GONE);
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
                    // initializeRecyclerView();
                    // new BackGroundLoadEvents().execute();
                 }
             }
         });
-        refreshGPSButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openGPS();
-               /* if (mLocation.getCountry()!=null) {
-                    frameLayout.setVisibility(View.GONE);
-                    //initializeRecyclerView();
-                    // new BackGroundLoadEvents().execute();
-                }*/
-            }
-        });
-        if (myLocation != null) {
+
+        /*if (myLocation != null) {
             mLocation.setLatitude(myLocation.getLatitude());
             mLocation.setLongitude(myLocation.getLongitude());
             Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
@@ -147,13 +250,13 @@ public class MainActivity extends AppCompatActivity {
                 mLocation.setCountry(addresses.get(0).getCountryName());
                 mLocation.setCity(addresses.get(0).getLocality());
                 frameLayout.setVisibility(View.GONE);
-                initializeRecyclerView();
+               // initializeRecyclerView();
             }
 
            // new BackGroundLoadEvents().execute();
            // initializeRecyclerView();
         }
-
+*/
         userID = Me.ME.get_id();
 
         addEventButton.setOnClickListener(new View.OnClickListener() {
@@ -193,8 +296,8 @@ public class MainActivity extends AppCompatActivity {
                                     backEndFuncforFirebase.addEvent(myEvents);
 
                                     alertDialog.dismiss();
-                                    initializeRecyclerView();
-                                    initializeAdapter();
+                                    //initializeRecyclerView();
+                                    //initializeAdapter();
                                 } catch (Exception e1) {
                                     e1.printStackTrace();
                                 }
@@ -222,6 +325,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void setGPS()
+    {
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locationListener);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.event_manu, menu);
@@ -238,15 +346,17 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(this, "your info is still loading! wait a moment", Toast.LENGTH_LONG).show();
                 }
+                break;
             }
             case R.id.refresh_list:{
                 if (mLocation!=null && mLocation.getCountry()!=null && mLocation.getCity()!=null) {
                     foo(MainActivity.this);
-                    initializeRecyclerView();
+                    //initializeRecyclerView();
                 }
                 else {
                     Toast.makeText(this, "your GPS is still loading", Toast.LENGTH_LONG).show();
                 }
+                break;
             }
         }
         return super.onOptionsItemSelected(item);
@@ -273,6 +383,7 @@ public class MainActivity extends AppCompatActivity {
     public void openGPS() {
         GpsTracker gt = new GpsTracker(getApplicationContext(), MainActivity.this);
         tmpLocation = gt.getLocation();
+
         if (tmpLocation != null && myLocation != null && tmpLocation.distanceTo(myLocation) > 200) {
             //new BackGroundLoadEvents().execute();
         }
@@ -296,7 +407,7 @@ public class MainActivity extends AppCompatActivity {
                 mLocation.setCity(addresses.get(0).getLocality());
                 String address = addresses.get(0).getAddressLine(0);
                 locationText.setText(address);
-                initializeRecyclerView();
+                //initializeRecyclerView();
                 //new BackGroundLoadEvents().execute();
                 frameLayout.setVisibility(View.GONE);
                 //initializeRecyclerView();
@@ -421,10 +532,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void initializeRecyclerView() {
-        if (mLocation.getCity()!=null && mLocation.getCountry()!=null) {
-            DatabaseReference database = FirebaseDatabase.getInstance().getReference("events").child(mLocation.getCountry()).child(mLocation.getCity());
-
+    public void initializeRecyclerView(final MyLocation myLocation) {
+            DatabaseReference database = FirebaseDatabase.getInstance().getReference("events").child(myLocation.getCountry()).child(myLocation.getCity());
             final List<Events> connectedEvents = new ArrayList<>();
             database.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -445,9 +554,6 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });
-        }
-
-
     }
 
     public class BackGroundLoadEvents extends AsyncTask<Void, Void, Void> {
@@ -465,7 +571,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            initializeRecyclerView();
+            //initializeRecyclerView();
             return null;
         }
 
@@ -591,6 +697,34 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("Location", "my location is " + location.toString());
                     }
                 });
+    }
+    // Acquire a reference to the system Location Manager
+
+
+    public void makeUseOfNewLocation(Location location) {
+        List<Address> addresses = null;
+        Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
+        MyLocation myLocation=new MyLocation();
+
+        try {
+            addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (addresses != null && addresses.size() > 0) {
+            myLocation.setCountry(addresses.get(0).getCountryName());
+            myLocation.setCity(addresses.get(0).getLocality());
+            myLocation.setLatitude(location.getLatitude());
+            myLocation.setLongitude(location.getLongitude());
+
+            String address = addresses.get(0).getAddressLine(0);
+            locationText.setText(address);
+            //initializeRecyclerView();
+            //new BackGroundLoadEvents().execute();
+            frameLayout.setVisibility(View.GONE);
+            initializeRecyclerView(myLocation);
+            locationManager.removeUpdates(locationListener);
+        }
     }
 
 }

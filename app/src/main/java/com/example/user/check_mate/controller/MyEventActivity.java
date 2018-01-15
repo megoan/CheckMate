@@ -64,7 +64,7 @@ public class MyEventActivity extends AppCompatActivity {
     RecyclerView personRecyclerView;
     UploadPersonAdapter personAdapter;
     LinearLayoutManager linearLayoutManager;
-
+    int selectedPosition=-1;
     ArrayList<Person> people = new ArrayList<>();
     String[] people3;
     Events event;
@@ -151,7 +151,7 @@ public class MyEventActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(final MyViewHolder holder, int position) {
+        public void onBindViewHolder(final MyViewHolder holder, final int position) {
             person = people.get(position);
             holder.myNane.setText(person.getName());
             holder.myAge.setText(String.valueOf(person.getAge()));
@@ -177,9 +177,9 @@ public class MyEventActivity extends AppCompatActivity {
             holder.circleImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
-
+                    person = people.get(position);
                     final Dialog mDialog = new Dialog(MyEventActivity.this);
+                    int p=position;
                     mDialog.setContentView(R.layout.single_picture);
                     ImageView imageView2 = mDialog.findViewById(R.id.close);
                     ImageView showImage = mDialog.findViewById(R.id.goProDialogImage);
@@ -189,7 +189,7 @@ public class MyEventActivity extends AppCompatActivity {
                                 .fit()
                                 //.memoryPolicy(MemoryPolicy.NO_CACHE)
                                 .placeholder(R.drawable.woman)
-                                .into(holder.circleImageView);
+                                .into(showImage);
                     }
                     else {
                         Picasso.with(MyEventActivity.this)
@@ -197,7 +197,7 @@ public class MyEventActivity extends AppCompatActivity {
                                 .fit()
                                 //.memoryPolicy(MemoryPolicy.NO_CACHE)
                                 .placeholder(R.drawable.boy)
-                                .into(holder.circleImageView);
+                                .into(showImage);
                     }
                     //showImage.setImageBitmap(person.getImg().getBitmap());
                     imageView2.setOnClickListener(new View.OnClickListener() {
@@ -211,22 +211,20 @@ public class MyEventActivity extends AppCompatActivity {
 
                 }
             });
+
             holder.sendImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    person = people.get(position);
                     //new DownloadImage().execute();
                     FirebaseStorage storage=FirebaseStorage.getInstance();
                     StorageReference storageReference=storage.getReference().child("images").child(person.get_id());
-
-
-
                     try {
                         File outputDir = MyEventActivity.this.getExternalCacheDir();
                         localFile = File.createTempFile("images", ".jpg",outputDir);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
                     storageReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
@@ -273,83 +271,10 @@ public class MyEventActivity extends AppCompatActivity {
                             // Handle any errors
                         }
                     });
-                  /*  final long ONE_MEGABYTE = 1024 * 1024;
-                    storageReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                        @Override
-                        public void onSuccess(byte[] bytes) {
-                            Bitmap b = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                            // Data for "images/island.jpg" is returns, use this as needed
-                            File mFile = savebitmap(b);
-
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            // Handle any errors
-                            int i=0;
-                            i++;
-                        }
-                    });*/
-/*
-                    //Picasso.with(MyEventActivity.this).load(person.getImageUrl()).into(target);
-                    InputStream input = null;
-                    try {
-                        URL url = new URL(person.getImageUrl());
-                        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                        connection.setDoInput(true);
-                        connection.connect();
-                        input = connection.getInputStream();
-                        Bitmap myBitmap = BitmapFactory.decodeStream(input);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    File mFile = savebitmap(myBitmap);
-                    Uri imageUri = null;
-                    imageUri = Uri.fromFile(mFile);
-
-                    Intent shareIntent = new Intent();
-                    shareIntent.setAction(Intent.ACTION_SEND);
-                    //Target whatsapp:
-                    shareIntent.setPackage("com.whatsapp");
-                    //Add text and then Image URI
-                    shareIntent.putExtra(Intent.EXTRA_TEXT, "HI, I saw "+person.getName()+" at the wedding. can u send me more info please?");
-                    shareIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
-                    shareIntent.setType("image/jpeg");
-                    shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-                    try {
-                        startActivity(shareIntent);
-                    } catch (android.content.ActivityNotFoundException ex) {
-
-                        Toast.makeText(getApplicationContext(),"you don't have whatsApp installed!", Toast.LENGTH_SHORT).show();
-                        Intent emailIntent = new Intent(Intent.ACTION_SEND);
-                        emailIntent.setData(Uri.parse("mailto:"));
-                        emailIntent.setType("text/html");
-                        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Hi what's up?");
-                        emailIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
-                        emailIntent.putExtra(Intent.EXTRA_TEXT, "Please find the details attached....");
-                        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "\n\n" + "HI, I saw "+person.getName()+" at the wedding. can u send me more info please?");
-                        startActivity(emailIntent);
-                        try {
-                            startActivity(Intent.createChooser(emailIntent, "Send mail..."));
-                            finish();
-                            Log.i("Finished Data", "");
-                        } catch (android.content.ActivityNotFoundException ex2) {
-                            Toast.makeText(MyEventActivity.this,
-                                    "No way you can share Reciepies,enjoy alone :-P", Toast.LENGTH_SHORT).show();
-                        }
-
-                    }*/
 
                 }
             });
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
 
-                }
-            });
         }
         private Target target = new Target() {
             @Override

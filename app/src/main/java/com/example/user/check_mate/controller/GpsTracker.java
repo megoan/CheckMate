@@ -55,6 +55,7 @@ public class GpsTracker implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
+        ((MainActivity)appContext).makeUseOfNewLocation(location);
     }
 
     @Override
@@ -68,4 +69,5 @@ public class GpsTracker implements LocationListener {
     @Override
     public void onProviderDisabled(String provider) {
     }
+
 }
