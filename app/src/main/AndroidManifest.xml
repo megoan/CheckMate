@@ -17,17 +17,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat"/> <!-- optional (needed if default theme has no action bar) -->
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" /> <!-- optional (needed if default theme has no action bar) -->
         <activity android:name=".controller.MainActivity" />
         <activity android:name=".controller.LoginActivity" />
         <activity
             android:name=".controller.ExitActivity"
             android:theme="@style/SplashTheme" />
         <activity android:name=".controller.RegisterActivity" />
-        <activity android:name=".controller.GetStartedActivity">
-
-        </activity>
+        <activity android:name=".controller.GetStartedActivity"></activity>
         <activity android:name=".controller.MyEventActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -41,6 +40,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".controller.FavoritesActivity"></activity>
     </application>
 
 </manifest>

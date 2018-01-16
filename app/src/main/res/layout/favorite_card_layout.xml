@@ -1,0 +1,138 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="5dp"
+    android:background="?android:attr/selectableItemBackground"
+
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="?android:attr/selectableItemBackground"
+        >
+        <RelativeLayout
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:elevation="4dp">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleType="centerCrop"
+
+                android:src="@drawable/camera_icon"
+                app:civ_border_color="@color/pink"
+                app:civ_border_width="2dp"
+
+                android:layout_margin="5dp"/>
+
+            <ImageView
+                android:id="@+id/sendImage"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+
+                android:background="?android:attr/selectableItemBackground"
+                android:elevation="4dp"
+                android:src="@drawable/ic_forward" />
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="60dp"
+            android:layout_marginLeft="-45dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/trans_rectangle_light_purple"
+            android:layout_gravity="center">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="vertical"
+
+                android:layout_weight="1"
+                >
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:paddingLeft="45dp"
+                    >
+                    <TextView
+                        android:id="@+id/myName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="My Name"
+                        android:layout_gravity="center"
+                        android:textColor="@color/black"
+                        />
+                    <TextView
+                        android:id="@+id/myAge"
+                        android:paddingLeft="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="45"
+                        android:layout_gravity="center"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:paddingLeft="45dp"
+                    android:orientation="horizontal">
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Kashur:"
+
+                        android:layout_gravity="center"
+                        />
+                    <TextView
+                        android:id="@+id/kashur"
+                        android:paddingLeft="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bride's X"
+                        android:layout_gravity="center"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:paddingLeft="45dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Event:"/>
+                    <TextView
+                        android:id="@+id/eventName"
+                        android:paddingLeft="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="friend wedding"/>
+
+                </LinearLayout>
+            </LinearLayout>
+            <ImageView
+                android:id="@+id/removeFavorite"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@android:drawable/ic_delete"
+                android:layout_marginRight="10dp"
+                android:elevation="4dp"
+                android:layout_gravity="center"
+                android:background="?android:attr/selectableItemBackground"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

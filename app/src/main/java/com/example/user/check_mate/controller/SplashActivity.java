@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import com.example.user.check_mate.R;
 import com.example.user.check_mate.model.datasource.ListDataSource;
+import com.example.user.check_mate.model.entities.Gender;
 import com.example.user.check_mate.model.entities.Person;
 import com.firebase.client.Firebase;
 import com.google.firebase.database.DataSnapshot;
@@ -18,6 +19,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class SplashActivity extends AppCompatActivity {
     String ret = "";
@@ -39,10 +46,7 @@ public class SplashActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
         if(sharedPreferences.contains("ID"))
         {
-            if(sharedPreferences.contains("favorite_1"))
-            {
-                loadFavorites();
-            }
+            loadFavorites();
             Intent intent =new Intent(SplashActivity.this,MainActivity.class);
             intent.putExtra("id",sharedPreferences.getString("ID",null));
             //loadPerson(sharedPreferences.getString("ID",null));
@@ -57,12 +61,48 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void loadFavorites() {
-        SharedPreferences mSharedPreference1 =   PreferenceManager.getDefaultSharedPreferences(this);
-        Me.favoriteID.clear();
-        int size = mSharedPreference1.getInt("Status_size", 0);
-        for(int i=0;i<size;i++)
+        FileInputStream fis = null;
+        try {
+            fis = this.openFileInput("favorite.txt");
+
+        InputStreamReader isr = new InputStreamReader(fis);
+        BufferedReader bufferedReader = new BufferedReader(isr);
+        StringBuilder sb = new StringBuilder();
+        String line;
+
+            while ((line = bufferedReader.readLine()) != null) {
+                sb.append(line);
+            }
+            convertStringToArrayList(sb.toString());
+        }catch (Exception e)
         {
-            Me.favoriteID.add(mSharedPreference1.getString("favorite_" + i, null));
+            e.printStackTrace();
+        }
+
+    }
+
+    private void convertStringToArrayList(String string) {
+
+        String[] people=string.split("~~");
+        for(int i=0;i<people.length;i++)
+        {
+            Person person=new Person();
+            String[] p=people[i].split("~");
+            person.setName(p[1]);
+            person.setAge(Integer.parseInt(p[2]));
+            person.setKashur(p[3]);
+            person.setGender(Gender.valueOf(p[4]));
+            person.set_id(p[5]);
+            person.setImageUrl(p[6]);
+            Me.favorites.add(person);
+            Me.events.add(p[7]);
+           /* String favorite="favorite_"+favoriteNumber+1+"\n";
+            favorite+=me.getName()+"\n";
+            favorite+=me.getAge()+"\n";
+            favorite+=me.getKashur()+"\n";
+            favorite+=me.getGender()+"\n";
+            favorite+=me.get_id()+"\n";
+            favorite+=eventName+"~~\n";*/
         }
     }
 

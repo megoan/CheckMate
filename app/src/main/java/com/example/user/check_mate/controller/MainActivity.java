@@ -338,9 +338,13 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             }
-            case R.id.refresh_list:{
-                setGPS();
-                    //initializeRecyclerView();
+            case R.id.favorites:{
+                if (stillLoading == false) {
+                    Intent intentProfile = new Intent(MainActivity.this, FavoritesActivity.class);
+                    startActivity(intentProfile);
+                } else {
+                    Toast.makeText(this, "your info is still loading! wait a moment", Toast.LENGTH_LONG).show();
+                }
                 }
 
                 break;
@@ -574,22 +578,15 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-
         builder.setTitle("Exit Check Mate");
-
         builder.setMessage("are you sure u want to leave? ");
-
         builder.setPositiveButton("exit", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
                 finish();
                 System.exit(0);
-                //int pid = android.os.Process.myPid();
-                //android.os.Process.killProcess(pid);
             }
         });
-
         builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
