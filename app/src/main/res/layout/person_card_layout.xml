@@ -88,6 +88,14 @@
             </LinearLayout>
         </LinearLayout>
             <ImageView
+                android:id="@+id/addToFavorite"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_favorite_checked"
+                android:layout_gravity="center"
+                android:layout_marginRight="20dp"
+                />
+            <ImageView
                 android:id="@+id/sendImage"
                 android:layout_width="30dp"
                 android:layout_height="30dp"

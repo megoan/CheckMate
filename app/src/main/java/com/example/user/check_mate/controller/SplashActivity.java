@@ -39,6 +39,10 @@ public class SplashActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
         if(sharedPreferences.contains("ID"))
         {
+            if(sharedPreferences.contains("favorite_1"))
+            {
+                loadFavorites();
+            }
             Intent intent =new Intent(SplashActivity.this,MainActivity.class);
             intent.putExtra("id",sharedPreferences.getString("ID",null));
             //loadPerson(sharedPreferences.getString("ID",null));
@@ -49,6 +53,16 @@ public class SplashActivity extends AppCompatActivity {
             Intent intent=new Intent(SplashActivity.this,GetStartedActivity.class);
             startActivity(intent);
             finish();
+        }
+    }
+
+    private void loadFavorites() {
+        SharedPreferences mSharedPreference1 =   PreferenceManager.getDefaultSharedPreferences(this);
+        Me.favoriteID.clear();
+        int size = mSharedPreference1.getInt("Status_size", 0);
+        for(int i=0;i<size;i++)
+        {
+            Me.favoriteID.add(mSharedPreference1.getString("favorite_" + i, null));
         }
     }
 

@@ -345,6 +345,7 @@ public class MyEventActivity extends AppCompatActivity {
             TextView kashur;
             CircleImageView circleImageView;
             ImageView sendImage;
+            ImageView addToFavorite;
 
             public MyViewHolder(View itemView) {
                 super(itemView);
@@ -354,6 +355,7 @@ public class MyEventActivity extends AppCompatActivity {
                 sendImage = (ImageView) itemView.findViewById(R.id.sendImage);
                 circleImageView = (CircleImageView) itemView.findViewById(R.id.imageView);
                 mCircleImageView = circleImageView;
+                addToFavorite=(ImageView)itemView.findViewById(R.id.addToFavorite);
             }
 
         }
