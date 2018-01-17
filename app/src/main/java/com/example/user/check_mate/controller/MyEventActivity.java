@@ -442,14 +442,14 @@ public class MyEventActivity extends AppCompatActivity {
 
     private String convertFavoriteToString(Person me) {
         int favoriteNumber=Me.favorites.size();
-        String favorite="favorite_"+(favoriteNumber+1)+"~";
-        favorite+=me.getName()+"~";
-        favorite+=me.getAge()+"~";
-        favorite+=me.getKashur()+"~";
-        favorite+=me.getGender()+"~";
-        favorite+=me.get_id()+"~";
-        favorite+=me.getImageUrl()+"~";
-        favorite+=eventName+"~~";
+        String favorite="favorite_"+(favoriteNumber+1)+"~^~^~";
+        favorite+=me.getName()+"~^~^~";
+        favorite+=me.getAge()+"~^~^~";
+        favorite+=me.getKashur()+"~^~^~";
+        favorite+=me.getGender()+"~^~^~";
+        favorite+=me.get_id()+"~^~^~";
+        favorite+=me.getImageUrl()+"~^~^~";
+        favorite+=eventName+"~^~^~^~";
         return favorite;
     }
 

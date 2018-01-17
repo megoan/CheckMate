@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
     Button addEventButton;
     Location myLocation;
     Location tmpLocation = null;
-    ArrayList<Events> events;
+    ArrayList<Events> events=new ArrayList<>();
     EventAdapter eventAdapter;
     AlertDialog alertDialog;
     LinearLayoutManager linearLayoutManager;
@@ -90,17 +90,16 @@ public class MainActivity extends AppCompatActivity {
 
     DatabaseReference eventsDataBase;
 
-    LocationManager locationManager;
+    LocationManager locationManagerGPS;
+   // LocationManager locationManagerINTERNET;
     LocationListener locationListener;
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode)
-        {
-            case 10:
-            {
-                if(grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
+        switch (requestCode) {
+            case 10: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     setGPS();
                 }
             }
@@ -111,8 +110,21 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        ArrayList<Events> e = (ArrayList<Events>) ListDataSource.eventsList;
+        btnLoc = (ImageView) findViewById(R.id.btnGetLoc);
+        eventRecyclerView = findViewById(R.id.events);
+        locationText = findViewById(R.id.locationText);
+        addEventButton = findViewById(R.id.addEvent);
+        frameLayout = findViewById(R.id.refreshGPS);
+        eventRecyclerView.setHasFixedSize(true);
+        linearLayoutManager = new LinearLayoutManager(MainActivity.this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        eventRecyclerView.setLayoutManager(linearLayoutManager);
+        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 123);
+        locationManagerGPS = (LocationManager) getSystemService(LOCATION_SERVICE);
+        eventAdapter=new EventAdapter(this,events);
+        eventRecyclerView.setAdapter(eventAdapter);
+        //locationManagerINTERNET = (LocationManager) getSystemService(LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
@@ -131,18 +143,18 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onProviderDisabled(String provider) {
-                Intent intent=new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 startActivity(intent);
             }
         };
-        if (Build.VERSION_CODES.M<=Build.VERSION.SDK_INT) {
+        if (Build.VERSION_CODES.M <= Build.VERSION.SDK_INT) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
                 requestPermissions(new String[]
                         {
-                                Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION,
+                                Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
                                 Manifest.permission.INTERNET
-                        },10);
+                        }, 10);
                 //    ActivityCompat#requestPermissions
                 // here to request the missing permissions, and then overriding
                 //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
@@ -151,8 +163,7 @@ public class MainActivity extends AppCompatActivity {
                 // for ActivityCompat#requestPermissions for more details.
                 return;
             }
-        }
-        else {
+        } else {
             setGPS();
         }
 
@@ -202,34 +213,25 @@ public class MainActivity extends AppCompatActivity {
         
         
         
-        Intent intent = getIntent();
+        /*Intent intent = getIntent();
         id = intent.getStringExtra("id");
         if (id != null) {
             stillLoading = true;
             storage = FirebaseStorage.getInstance();
             new getUserAsync().execute();
-        }
-        ArrayList<Events> e = (ArrayList<Events>) ListDataSource.eventsList;
-        btnLoc = (ImageView) findViewById(R.id.btnGetLoc);
-        eventRecyclerView = findViewById(R.id.events);
-        locationText = findViewById(R.id.locationText);
-        addEventButton = findViewById(R.id.addEvent);
-        frameLayout=findViewById(R.id.refreshGPS);
-        eventRecyclerView.setHasFixedSize(true);
-        linearLayoutManager = new LinearLayoutManager(MainActivity.this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        eventRecyclerView.setLayoutManager(linearLayoutManager);
-        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 123);
+        }*/
+
         //openGPS();
         btnLoc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //openGPS();
                 if (myLocation != null) {
-                    frameLayout.setVisibility(View.GONE);
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-                   // initializeRecyclerView();
-                   // new BackGroundLoadEvents().execute();
+                    //frameLayout.setVisibility(View.GONE);
+                    locationManagerGPS.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+                    //locationManagerINTERNET.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5, 0, locationListener);
+                    // initializeRecyclerView();
+                    // new BackGroundLoadEvents().execute();
                 }
             }
         });
@@ -264,50 +266,49 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 myEvents = new Events();
 
-                    myEvents.setmMyLocation(mLocation);
-                    AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
-                    View mView = getLayoutInflater().inflate(R.layout.add_event_dialog, null);
-                    final EditText editText = mView.findViewById(R.id.eventNameView);
-                    Button button = mView.findViewById(R.id.addEventbutton);
-                    button.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            if (editText.getText().toString() == null || editText.getText().toString().length() == 0) {
-                                Toast.makeText(getApplicationContext(), "can't leave event name empty!", Toast.LENGTH_LONG).show();
-                            } else {
-                                myEvents.setEventName(editText.getText().toString());
-                                try {
+                myEvents.setmMyLocation(mLocation);
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
+                View mView = getLayoutInflater().inflate(R.layout.add_event_dialog, null);
+                final EditText editText = mView.findViewById(R.id.eventNameView);
+                Button button = mView.findViewById(R.id.addEventbutton);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (editText.getText().toString() == null || editText.getText().toString().length() == 0) {
+                            Toast.makeText(getApplicationContext(), "can't leave event name empty!", Toast.LENGTH_LONG).show();
+                        } else {
+                            myEvents.setEventName(editText.getText().toString());
+                            try {
 
-                                    Date date = Calendar.getInstance().getTime();
-                                    MyDate myDate = new MyDate();
-                                    myDate.setDay(date.getDay());
-                                    myDate.setMonth(date.getMonth());
-                                    myDate.setYear(date.getYear());
-                                    myDate.setHour(date.getHours());
-                                    myDate.setMinute(date.getMinutes());
-                                    myDate.setSecond(date.getSeconds());
-                                    myEvents.setmDate(myDate);
-
-
-                                    //TODO add event
-                                    BackEndFunc backEndFuncforFirebase = FactoryMethod.getBackEndFunc(DataSourceType.DATA_INTERNET);
+                                Date date = Calendar.getInstance().getTime();
+                                MyDate myDate = new MyDate();
+                                myDate.setDay(date.getDay());
+                                myDate.setMonth(date.getMonth());
+                                myDate.setYear(date.getYear());
+                                myDate.setHour(date.getHours());
+                                myDate.setMinute(date.getMinutes());
+                                myDate.setSecond(date.getSeconds());
+                                myEvents.setmDate(myDate);
 
 
-                                    backEndFuncforFirebase.addEvent(myEvents);
+                                //TODO add event
+                                BackEndFunc backEndFuncforFirebase = FactoryMethod.getBackEndFunc(DataSourceType.DATA_INTERNET);
 
-                                    alertDialog.dismiss();
-                                    //initializeRecyclerView();
-                                    //initializeAdapter();
-                                } catch (Exception e1) {
-                                    e1.printStackTrace();
-                                }
+
+                                backEndFuncforFirebase.addEvent(myEvents);
+
+                                alertDialog.dismiss();
+                                //initializeRecyclerView();
+                                //initializeAdapter();
+                            } catch (Exception e1) {
+                                e1.printStackTrace();
                             }
                         }
-                    });
-                    mBuilder.setView(mView);
-                    alertDialog = mBuilder.create();
-                    alertDialog.show();
-
+                    }
+                });
+                mBuilder.setView(mView);
+                alertDialog = mBuilder.create();
+                alertDialog.show();
 
 
             }
@@ -315,9 +316,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void setGPS()
-    {
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+    public void setGPS() {
+        locationManagerGPS.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+        //locationManagerINTERNET.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5, 0, locationListener);
     }
 
     @Override
@@ -330,24 +331,17 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.profile_item: {
-                if (stillLoading == false) {
-                    Intent intentProfile = new Intent(MainActivity.this, EditProfileActivity.class);
-                    startActivity(intentProfile);
-                } else {
-                    Toast.makeText(this, "your info is still loading! wait a moment", Toast.LENGTH_LONG).show();
-                }
+                Intent intentProfile = new Intent(MainActivity.this, EditProfileActivity.class);
+                startActivity(intentProfile);
                 break;
             }
-            case R.id.favorites:{
-                if (stillLoading == false) {
-                    Intent intentProfile = new Intent(MainActivity.this, FavoritesActivity.class);
-                    startActivity(intentProfile);
-                } else {
-                    Toast.makeText(this, "your info is still loading! wait a moment", Toast.LENGTH_LONG).show();
-                }
-                }
+            case R.id.favorites: {
 
-                break;
+                Intent intentProfile = new Intent(MainActivity.this, FavoritesActivity.class);
+                startActivity(intentProfile);
+            }
+
+            break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -412,7 +406,7 @@ public class MainActivity extends AppCompatActivity {
 
         private LayoutInflater inflater;
         private Context context;
-        ArrayList<Events> events;
+        public ArrayList<Events> events;
 
         public EventAdapter(Context context, ArrayList<Events> events) {
             inflater = LayoutInflater.from(context);
@@ -435,73 +429,68 @@ public class MainActivity extends AppCompatActivity {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (!stillLoading) {
-                        if (Me.ME.getEventId()!=null && Me.ME.getEventId().equals(event.getFirebaseID())) {
-                            Intent intent = new Intent(MainActivity.this, MyEventActivity.class);
-                            intent.putExtra("id", event.getFirebaseID());
-                            intent.putExtra("name", event.getEventName());
-                            Me.ME.setEventId(event.getFirebaseID());
-                            Me.ME.setAtEvent(true);
-                            startActivity(intent);
-                        } else {
-                            AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
-                            View mView = getLayoutInflater().inflate(R.layout.join_event_dialog, null);
-                            TextView joinButton = mView.findViewById(R.id.joinView);
-                            TextView cancelButton = mView.findViewById(R.id.cancelView);
-                            TextView eventName = mView.findViewById(R.id.eventNameView);
-                            final EditText connectedView = mView.findViewById(R.id.connectedView);
-                            eventName.setText(evntN);
-                            joinButton.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    if (connectedView.getText().toString() == null || connectedView.getText().toString().length() == 0) {
-                                        Toast.makeText(MainActivity.this, "can't leave field empty!", Toast.LENGTH_LONG).show();
-                                    } else {
-                                        if (Me.ME.isAtEvent()) {
+                    if (Me.ME.getEventId() != null && Me.ME.getEventId().equals(event.getFirebaseID())) {
+                        Intent intent = new Intent(MainActivity.this, MyEventActivity.class);
+                        intent.putExtra("id", event.getFirebaseID());
+                        intent.putExtra("name", event.getEventName());
+                        Me.ME.setEventId(event.getFirebaseID());
+                        Me.ME.setAtEvent(true);
+                        startActivity(intent);
+                    } else {
+                        AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
+                        View mView = getLayoutInflater().inflate(R.layout.join_event_dialog, null);
+                        TextView joinButton = mView.findViewById(R.id.joinView);
+                        TextView cancelButton = mView.findViewById(R.id.cancelView);
+                        TextView eventName = mView.findViewById(R.id.eventNameView);
+                        final EditText connectedView = mView.findViewById(R.id.connectedView);
+                        eventName.setText(evntN);
+                        joinButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if (connectedView.getText().toString() == null || connectedView.getText().toString().length() == 0) {
+                                    Toast.makeText(MainActivity.this, "can't leave field empty!", Toast.LENGTH_LONG).show();
+                                } else {
+                                    if (Me.ME.isAtEvent()) {
 
 
-                                            backEndFuncForFirebase.removePersonFromEvent(Me.ME.getEventId(), Me.ME.get_id());
-                                        }
-
-                                        Intent intent = new Intent(MainActivity.this, MyEventActivity.class);
-                                        intent.putExtra("id", event.getFirebaseID());
-                                        intent.putExtra("name", event.getEventName());
-                                        intent.putExtra("country",event.getmMyLocation().getCountry());
-                                        intent.putExtra("city",event.getmMyLocation().getCity());
-                                        String[] array= event.getPeopleAtevent().toArray(new String[ event.getPeopleAtevent().size()+1]);
-                                        for(int i=0;i<event.getPeopleAtevent().size();i++)
-                                        {
-                                            array[i]=event.getPeopleAtevent().get(i);
-                                        }
-                                        array[event.getPeopleAtevent().size()]=Me.ME.get_id();
-                                        intent.putExtra("atEvent",array);
-                                        Me.ME.setEventId(event.getFirebaseID());
-                                        Me.ME.setKashur(connectedView.getText().toString());
-                                        Me.ME.setAtEvent(true);
-
-                                        backEndFuncForFirebase.addPersonToEvent(event,Me.ME);
-                                        backEndFuncForFirebase.updatePerson(Me.ME);
-                                        //backEndFunc.updateEvent(event);
-                                        //backEndFunc.updatePerson(Me.ME);
-                                        alertDialog.dismiss();
-                                        startActivity(intent);
+                                        backEndFuncForFirebase.removePersonFromEvent(Me.ME.getEventId(), Me.ME.get_id());
                                     }
-                                }
-                            });
-                            cancelButton.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
+
+                                    Intent intent = new Intent(MainActivity.this, MyEventActivity.class);
+                                    intent.putExtra("id", event.getFirebaseID());
+                                    intent.putExtra("name", event.getEventName());
+                                    intent.putExtra("country", event.getmMyLocation().getCountry());
+                                    intent.putExtra("city", event.getmMyLocation().getCity());
+                                    String[] array = event.getPeopleAtevent().toArray(new String[event.getPeopleAtevent().size() + 1]);
+                                    for (int i = 0; i < event.getPeopleAtevent().size(); i++) {
+                                        array[i] = event.getPeopleAtevent().get(i);
+                                    }
+                                    array[event.getPeopleAtevent().size()] = Me.ME.get_id();
+                                    intent.putExtra("atEvent", array);
+                                    Me.ME.setEventId(event.getFirebaseID());
+                                    Me.ME.setKashur(connectedView.getText().toString());
+                                    Me.ME.setAtEvent(true);
+
+                                    backEndFuncForFirebase.addPersonToEvent(event, Me.ME);
+                                    backEndFuncForFirebase.updatePerson(Me.ME);
+                                    //backEndFunc.updateEvent(event);
+                                    //backEndFunc.updatePerson(Me.ME);
                                     alertDialog.dismiss();
+                                    startActivity(intent);
                                 }
-                            });
-                            mBuilder.setView(mView);
-                            alertDialog = mBuilder.create();
-                            alertDialog.show();
-                        }
+                            }
+                        });
+                        cancelButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                alertDialog.dismiss();
+                            }
+                        });
+                        mBuilder.setView(mView);
+                        alertDialog = mBuilder.create();
+                        alertDialog.show();
                     }
-                    else {
-                        Toast.makeText(MainActivity.this, "your info is still loading! wait a moment", Toast.LENGTH_LONG).show();
-                    }
+
 
                 }
             });
@@ -523,27 +512,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void initializeRecyclerView(final MyLocation myLocation) {
-            DatabaseReference database = FirebaseDatabase.getInstance().getReference("events").child(myLocation.getCountry()).child(myLocation.getCity());
-            final List<Events> connectedEvents = new ArrayList<>();
-            database.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (final DataSnapshot item : dataSnapshot.getChildren()) {
-                            Events events = item.getValue(Events.class);
-                            connectedEvents.add(events);
-                    }
-                    events = backEndFuncForFirebase.getAllEventsByLocationDistance(new MyLocation(myLocation.getLatitude(), myLocation.getLongitude()), 200, (ArrayList<Events>) connectedEvents);
-                    eventAdapter = new EventAdapter(MainActivity.this, events);
-
-                    //eventAdapter.notifyDataSetChanged();
-                    eventRecyclerView.setAdapter(eventAdapter);
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference("events").child(myLocation.getCountry()).child(myLocation.getCity());
+        final List<Events> connectedEvents = new ArrayList<>();
+        database.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (final DataSnapshot item : dataSnapshot.getChildren()) {
+                    Events events = item.getValue(Events.class);
+                    connectedEvents.add(events);
                 }
+                events = backEndFuncForFirebase.getAllEventsByLocationDistance(new MyLocation(myLocation.getLatitude(), myLocation.getLongitude()), 200, (ArrayList<Events>) connectedEvents);
+                eventAdapter = new EventAdapter(MainActivity.this, events);
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+                //eventAdapter.notifyDataSetChanged();
+                eventRecyclerView.setAdapter(eventAdapter);
+            }
 
-                }
-            });
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public class BackGroundLoadEvents extends AsyncTask<Void, Void, Void> {
@@ -601,74 +590,7 @@ public class MainActivity extends AppCompatActivity {
         eventRecyclerView.setAdapter(eventAdapter);
     }
 
-    public class getUserAsync extends AsyncTask<Void, Void, Void> {
 
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            stillLoading = true;
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-           // DatabaseReference database = FirebaseDatabase.getInstance().getReference("people");
-
-            //final List<Person> connectedPerson = new ArrayList<>();
-            /*database.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (final DataSnapshot item : dataSnapshot.getChildren()) {
-                        if (item.getKey().equals(id)) {
-                            StorageReference ref = storage.getReference().child("images/" + id);
-                            final long ONE_MEGABYTE = 1024 * 1024;
-                            ref.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                                @Override
-                                public void onSuccess(byte[] bytes) {
-                                    //connectedPerson.clear();
-                                    //bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                    Me.ME = item.getValue(Person.class);
-                                    *//*connectedPerson.add(person);
-                                    Me.ME = new Person();
-                                    Me.ME.setName(connectedPerson.get(0).getName());
-                                    Me.ME.setAge(connectedPerson.get(0).getAge());
-                                    Me.ME.set_id(connectedPerson.get(0).get_id());
-                                    Me.ME.setAboutMe(connectedPerson.get(0).getAboutMe());
-                                    Me.ME.set_id(connectedPerson.get(0).get_id());
-                                    Me.ME.setGender(connectedPerson.get(0).getGender());
-                                    Me.ME.setImageUrl(connectedPerson.get(0).getImageUrl());
-                                    Me.ME.setEventId(connectedPerson.get(0).get_id());
-                                    Me.ME.setAtEvent(connectedPerson.get(0).isAtEvent());*//*
-                                    stillLoading = false;
-
-                                }
-
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception exception) {
-                                    String string = exception.getMessage().toString();
-                                    string += "   hello";
-                                }
-                            });
-                        }
-
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-
-            });*/
-            return null;
-        }
-    }
 
     public void foo(Context context) {
         // when you need location
@@ -676,7 +598,8 @@ public class MainActivity extends AppCompatActivity {
 
         SingleShotLocationProvider.requestSingleUpdate(context,
                 new SingleShotLocationProvider.LocationCallback() {
-                    @Override public void onNewLocationAvailable(SingleShotLocationProvider.GPSCoordinates location) {
+                    @Override
+                    public void onNewLocationAvailable(SingleShotLocationProvider.GPSCoordinates location) {
                         Log.d("Location", "my location is " + location.toString());
                     }
                 });
@@ -687,7 +610,7 @@ public class MainActivity extends AppCompatActivity {
     public void makeUseOfNewLocation(Location location) {
         List<Address> addresses = null;
         Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
-        MyLocation myLocation=new MyLocation();
+        MyLocation myLocation = new MyLocation();
 
         try {
             addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
@@ -704,10 +627,109 @@ public class MainActivity extends AppCompatActivity {
             locationText.setText(address);
             //initializeRecyclerView();
             //new BackGroundLoadEvents().execute();
-            frameLayout.setVisibility(View.GONE);
-            initializeRecyclerView(myLocation);
-            locationManager.removeUpdates(locationListener);
+            //frameLayout.setVisibility(View.GONE);
+            getEvents(myLocation);
+            //new LoadEvents(myLocation).execute();
+//            initializeRecyclerView(myLocation);
+            locationManagerGPS.removeUpdates(locationListener);
+            //locationManagerINTERNET.removeUpdates(locationListener);
         }
+    }
+
+    public class LoadEvents extends AsyncTask<Void,Events,Void>
+    {
+        MyLocation myLocation;
+
+        public LoadEvents(MyLocation myLocation) {
+            this.myLocation = myLocation;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onProgressUpdate(Events... values) {
+            super.onProgressUpdate(values);
+            eventAdapter.events.add(values[0]);
+            eventAdapter.notifyDataSetChanged();
+
+            //frameLayout.setVisibility(View.GONE);
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            frameLayout.setVisibility(View.GONE);
+
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            DatabaseReference database = FirebaseDatabase.getInstance().getReference("events").child(myLocation.getCountry()).child(myLocation.getCity());
+            database.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (final DataSnapshot item : dataSnapshot.getChildren()) {
+                        Events events = item.getValue(Events.class);
+                        events=backEndFuncForFirebase.getEventByLocation(new MyLocation(myLocation.getLatitude(), myLocation.getLongitude()), 200, events);
+                        if(events!=null){
+                            publishProgress(events);
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                    //events = backEndFuncForFirebase.getAllEventsByLocationDistance(new MyLocation(myLocation.getLatitude(), myLocation.getLongitude()), 200, (ArrayList<Events>) connectedEvents);
+                    // eventAdapter = new EventAdapter(MainActivity.this, events);
+                    //eventAdapter.notifyDataSetChanged();
+                    // eventRecyclerView.setAdapter(eventAdapter);
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+            return null;
+        }
+    }
+
+    public void getEvents(final MyLocation myLocation)
+    {
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference("events").child(myLocation.getCountry()).child(myLocation.getCity());
+        database.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (final DataSnapshot item : dataSnapshot.getChildren()) {
+                    Events events = item.getValue(Events.class);
+                    events=backEndFuncForFirebase.getEventByLocation(new MyLocation(myLocation.getLatitude(), myLocation.getLongitude()), 200, events);
+                    if(events!=null){
+                        eventAdapter.events.add(events);
+
+                        MainActivity.this.runOnUiThread(new Runnable() {
+                            public void run() {
+                                frameLayout.setVisibility(View.GONE);
+                                eventAdapter.notifyDataSetChanged();
+                            }
+                        });
+
+
+                    }
+                }
+                frameLayout.setVisibility(View.GONE);
+                //events = backEndFuncForFirebase.getAllEventsByLocationDistance(new MyLocation(myLocation.getLatitude(), myLocation.getLongitude()), 200, (ArrayList<Events>) connectedEvents);
+                // eventAdapter = new EventAdapter(MainActivity.this, events);
+                //eventAdapter.notifyDataSetChanged();
+                // eventRecyclerView.setAdapter(eventAdapter);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 }

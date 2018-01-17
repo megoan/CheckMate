@@ -3,11 +3,13 @@ package com.example.user.check_mate.controller;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.StrictMode;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -174,12 +176,36 @@ public class EditProfileActivity extends AppCompatActivity {
                     Person person =new Person(Me.ME.getName(),Me.ME.getAge(),Me.ME.getGender(),Me.ME.getImageUrl(),Me.ME.getAboutMe(),Me.ME.getKashur(),Me.ME.getEventId(),Me.ME.isAtEvent(),Me.ME.get_id());
                     DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("people").child(Me.ME.get_id());
                     databaseReference.setValue(person);
+                    SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(EditProfileActivity.this);
+                    SharedPreferences.Editor editor=sharedPreferences.edit();
+                    editor.putString("ID",Me.ME.get_id());
+                    editor.putString("NAME",Me.ME.getName());
+                    editor.putString("GENDER", String.valueOf(Me.ME.getGender()));
+                    editor.putInt("AGE",Me.ME.getAge());
+                    editor.putString("IMAGEURL",Me.ME.getImageUrl());
+                    editor.putBoolean("ATEVENT",Me.ME.isAtEvent());
+                    editor.putString("EVENTID",Me.ME.getEventId());
+                    editor.putString("KASHUR",Me.ME.getKashur());
+                    editor.commit();
                 }
             });
         }
-
-
-
+        else {
+            Person person =new Person(Me.ME.getName(),Me.ME.getAge(),Me.ME.getGender(),Me.ME.getImageUrl(),Me.ME.getAboutMe(),Me.ME.getKashur(),Me.ME.getEventId(),Me.ME.isAtEvent(),Me.ME.get_id());
+            DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("people").child(Me.ME.get_id());
+            databaseReference.setValue(person);
+            SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(EditProfileActivity.this);
+            SharedPreferences.Editor editor=sharedPreferences.edit();
+            editor.putString("ID",Me.ME.get_id());
+            editor.putString("NAME",Me.ME.getName());
+            editor.putString("GENDER", String.valueOf(Me.ME.getGender()));
+            editor.putInt("AGE",Me.ME.getAge());
+            editor.putString("IMAGEURL",Me.ME.getImageUrl());
+            editor.putBoolean("ATEVENT",Me.ME.isAtEvent());
+            editor.putString("EVENTID",Me.ME.getEventId());
+            editor.putString("KASHUR",Me.ME.getKashur());
+            editor.commit();
+        }
     }
 
 

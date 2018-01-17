@@ -183,6 +183,15 @@ public class BackendForFirebase implements BackEndFunc {
     }
 
     @Override
+    public Events getEventByLocation(MyLocation myLocation, double distance, Events mEvent) {
+        double locationDistance = meterDistanceBetweenPoints(myLocation.getLatitude(), myLocation.getLongitude(), mEvent.getmMyLocation().getLatitude(), mEvent.getmMyLocation().getLongitude());
+        if (locationDistance < distance) {
+            return mEvent;
+        }
+        return null;
+    }
+
+    @Override
     public double meterDistanceBetweenPoints(double lat_a, double lng_a, double lat_b, double lng_b) {
         double pk = (double) (180.f / Math.PI);
 

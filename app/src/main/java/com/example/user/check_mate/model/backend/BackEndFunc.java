@@ -36,5 +36,6 @@ public interface BackEndFunc {
 
     public ArrayList<Events> getAllEvents();
     public ArrayList<Events> getAllEventsByLocationDistance(MyLocation myLocation, double distance, ArrayList<Events> mEvents);
+    public Events getEventByLocation(MyLocation myLocation,double distance, Events mEvent);
     public double meterDistanceBetweenPoints(double lat_a, double lng_a, double lat_b, double lng_b);
 }

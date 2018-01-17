@@ -92,11 +92,11 @@ public class SplashActivity extends AppCompatActivity {
 
     private void convertStringToArrayList(String string) {
 
-        String[] people=string.split("~~");
+        String[] people=string.split("~^~^~^~");
         for(int i=0;i<people.length;i++)
         {
             Person person=new Person();
-            String[] p=people[i].split("~");
+            String[] p=people[i].split("~^~^~");
             person.setName(p[1]);
             person.setAge(Integer.parseInt(p[2]));
             person.setKashur(p[3]);

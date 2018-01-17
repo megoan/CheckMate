@@ -260,6 +260,11 @@ public class BackEndForList implements BackEndFunc {
     }
 
     @Override
+    public Events getEventByLocation(MyLocation myLocation, double distance, Events mEvent) {
+        return null;
+    }
+
+    @Override
     public double meterDistanceBetweenPoints(double lat_a, double lng_a, double lat_b, double lng_b) {
         double pk = (double) (180.f / Math.PI);
 
