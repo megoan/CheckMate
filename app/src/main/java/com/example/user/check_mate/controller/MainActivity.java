@@ -617,10 +617,10 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            DatabaseReference database = FirebaseDatabase.getInstance().getReference("people");
+           // DatabaseReference database = FirebaseDatabase.getInstance().getReference("people");
 
             //final List<Person> connectedPerson = new ArrayList<>();
-            database.addListenerForSingleValueEvent(new ValueEventListener() {
+            /*database.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     for (final DataSnapshot item : dataSnapshot.getChildren()) {
@@ -633,7 +633,7 @@ public class MainActivity extends AppCompatActivity {
                                     //connectedPerson.clear();
                                     //bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                                     Me.ME = item.getValue(Person.class);
-                                    /*connectedPerson.add(person);
+                                    *//*connectedPerson.add(person);
                                     Me.ME = new Person();
                                     Me.ME.setName(connectedPerson.get(0).getName());
                                     Me.ME.setAge(connectedPerson.get(0).getAge());
@@ -643,7 +643,7 @@ public class MainActivity extends AppCompatActivity {
                                     Me.ME.setGender(connectedPerson.get(0).getGender());
                                     Me.ME.setImageUrl(connectedPerson.get(0).getImageUrl());
                                     Me.ME.setEventId(connectedPerson.get(0).get_id());
-                                    Me.ME.setAtEvent(connectedPerson.get(0).isAtEvent());*/
+                                    Me.ME.setAtEvent(connectedPerson.get(0).isAtEvent());*//*
                                     stillLoading = false;
 
                                 }
@@ -665,7 +665,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
 
-            });
+            });*/
             return null;
         }
     }

@@ -132,6 +132,13 @@ public class GetStartedActivity extends AppCompatActivity {
                     SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(GetStartedActivity.this);
                     SharedPreferences.Editor editor=sharedPreferences.edit();
                     editor.putString("ID",Me.ME.get_id());
+                    editor.putString("NAME",Me.ME.getName());
+                    editor.putString("GENDER", String.valueOf(Me.ME.getGender()));
+                    editor.putInt("AGE",Me.ME.getAge());
+                    editor.putString("IMAGEURL",Me.ME.getImageUrl());
+                    editor.putBoolean("ATEVENT",Me.ME.isAtEvent());
+                    editor.putString("EVENTID",Me.ME.getEventId());
+                    editor.putString("KASHUR",Me.ME.getKashur());
                     editor.commit();
                     intent.putExtra("ID",Me.ME.get_id());
                     startActivity(intent);

@@ -47,6 +47,15 @@ public class SplashActivity extends AppCompatActivity {
         if(sharedPreferences.contains("ID"))
         {
             loadFavorites();
+            Me.ME.set_id(sharedPreferences.getString("ID",null));
+            Me.ME.setName(sharedPreferences.getString("NAME",null));
+            Me.ME.setAge(sharedPreferences.getInt("AGE",0));
+            Me.ME.setGender(Gender.valueOf(sharedPreferences.getString("GENDER",null)));
+            Me.ME.setImageUrl(sharedPreferences.getString("IMAGEURL",null));
+            Me.ME.setAtEvent(sharedPreferences.getBoolean("ATEVENT",false));
+            Me.ME.setEventId(sharedPreferences.getString("EVENTID",null));
+            Me.ME.setKashur(sharedPreferences.getString("KASHUR",null));
+
             Intent intent =new Intent(SplashActivity.this,MainActivity.class);
             intent.putExtra("id",sharedPreferences.getString("ID",null));
             //loadPerson(sharedPreferences.getString("ID",null));
