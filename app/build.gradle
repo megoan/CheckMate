@@ -4,11 +4,15 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.example.user.check_mate"
-        minSdkVersion 15
+        minSdkVersion 17
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+    }
+    dexOptions {
+        javaMaxHeapSize "4g"
     }
     buildTypes {
         release {
@@ -19,7 +23,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:26.+'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation 'com.google.firebase:firebase-messaging:11.8.0'
@@ -36,5 +40,8 @@ dependencies {
     compile 'com.google.firebase:firebase-storage:11.8.0'
     compile 'com.theartofdev.edmodo:android-image-cropper:2.6.+'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.google.android.gms:play-services:11.8.0'
+    compile 'com.android.support:multidex:1.0.2'
 }
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.android.application'

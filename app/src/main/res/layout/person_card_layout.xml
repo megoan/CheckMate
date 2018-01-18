@@ -8,45 +8,38 @@
     android:background="?android:attr/selectableItemBackground"
 
   >
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="?android:attr/selectableItemBackground"
         >
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imageView"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/camera_icon"
-            app:civ_border_color="@color/pink"
-            app:civ_border_width="2dp"
-            android:elevation="4dp"
-            android:layout_margin="5dp"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="horizontal"
-            android:layout_height="40dp"
-            android:layout_marginLeft="-30dp"
-            android:layout_marginStart="-30dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginStart="15dp"
             android:background="@drawable/trans_rectangle_light_purple"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
 
+            android:paddingRight="45dp"
             android:layout_weight="1"
             >
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="30dp"
-                android:paddingStart="30dp"
+                android:paddingRight="30dp"
+
                >
                 <TextView
                     android:id="@+id/myName"
@@ -69,15 +62,12 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="30dp"
-                android:paddingStart="30dp"
+                android:paddingRight="30dp"
                 android:orientation="horizontal">
                 <TextView
-
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/kashur"
-
                     android:layout_gravity="center"
                     />
                 <TextView
@@ -86,8 +76,9 @@
                     android:paddingStart="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Brides friend"
+                    android:text="Brides frienddasd"
                     android:layout_gravity="center"
+
                     />
             </LinearLayout>
         </LinearLayout>
@@ -97,9 +88,10 @@
                 android:layout_height="40dp"
                 android:src="@drawable/ic_favorite_checked"
                 android:layout_gravity="center"
-                android:layout_marginRight="20dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
                 android:autoMirrored="true"
+                android:layout_marginLeft="30dp"
                 />
             <ImageView
                 android:id="@+id/sendImage"
@@ -108,13 +100,30 @@
                 android:src="@drawable/ic_forward"
                 android:layout_marginRight="10dp"
                 android:layout_marginEnd="10dp"
-                android:elevation="4dp"
                 android:layout_gravity="center"
                 android:background="?android:attr/selectableItemBackground"
-                android:rotationY="@integer/angle_rtl_180"
-                android:scaleX="@dimen/scale_rtl_1"
+
                 />
         </LinearLayout>
-    </LinearLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageView"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/camera_icon"
+            app:civ_border_color="@color/pink"
+            app:civ_border_width="2dp"
+            android:layout_margin="5dp"/>
+        <ProgressBar
+            android:id="@+id/loadImageProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"/>
+        </RelativeLayout>
+    </RelativeLayout>
 
 </LinearLayout>

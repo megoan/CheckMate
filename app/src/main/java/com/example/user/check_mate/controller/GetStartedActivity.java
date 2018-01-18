@@ -99,7 +99,7 @@ public class GetStartedActivity extends AppCompatActivity {
         }
         ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(this,R.layout.age_spinner, items);
         ageSpinner.setAdapter(adapter);
-        ageSpinner.setSelection(3);
+        ageSpinner.setSelection(0);
 
 
 
@@ -171,6 +171,7 @@ public class GetStartedActivity extends AppCompatActivity {
         AlertDialog alert = builder.create();
         alert.show();
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {

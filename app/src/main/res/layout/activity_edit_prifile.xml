@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.user.check_mate.controller.EditProfileActivity"
-    tools:layout_editor_absoluteY="81dp"
     android:background="@drawable/gradient"
-    android:focusableInTouchMode="true">
+    android:focusableInTouchMode="true"
+    tools:context="com.example.user.check_mate.controller.EditProfileActivity"
+    tools:layout_editor_absoluteY="81dp">
 
 
-    <android.support.constraint.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
 
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:focusableInTouchMode="true"
         tools:context="com.example.user.check_mate.controller.EditProfileActivity"
-        tools:layout_editor_absoluteY="81dp"
-        android:focusableInTouchMode="true">
+        tools:layout_editor_absoluteY="81dp">
 
         <!-- <ImageView
              android:id="@+id/imageView"
@@ -48,32 +46,43 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:src="@drawable/image_rim"
                     android:layout_width="206dp"
                     android:layout_height="206dp"
-                    android:elevation="9dp"
-                    android:layout_margin="5dp"
+                    android:layout_alignParentLeft="true"
+
+                    android:layout_alignParentTop="true"
                     android:layout_centerInParent="true"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    />
+                    android:layout_margin="5dp"
+                    android:src="@drawable/image_rim" />
 
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/imageView"
-                        android:layout_width="156dp"
-                        android:layout_height="156dp"
-                        android:layout_margin="5dp"
-                        android:elevation="8dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/camera_icon"
-                        app:civ_border_color="@color/pink"
-                        app:civ_border_width="2dp"
-                        android:layout_centerInParent="true"
-                        android:layout_centerVertical="true"
-                       />
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="156dp"
+                    android:layout_height="156dp"
+                    android:layout_centerInParent="true"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="5dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/camera_icon"
+                    app:civ_border_color="@color/pink"
+                    app:civ_border_width="2dp" />
+
+                <ProgressBar
+                    android:id="@+id/loadImageProgress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true" />
             </RelativeLayout>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/click_on_the_image_to_change_it"
+
+                android:textColor="@android:color/white" />
         </LinearLayout>
 
         <ScrollView
@@ -111,10 +120,11 @@
                         android:id="@+id/nameText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:ems="10"
                         android:hint="@string/my_name"
+                        android:inputType="textPersonName"
                         android:textColor="@color/white"
-                        android:textColorHint="@color/white"
-                        android:inputType="textPersonName"/>
+                        android:textColorHint="@color/whiteTransparent" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -133,8 +143,7 @@
                         android:id="@+id/ageSpinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        >
+                        android:layout_gravity="bottom">
 
                     </Spinner>
                 </LinearLayout>
@@ -144,80 +153,84 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="10dp">
+
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_gender"
-                        android:paddingRight="5dp"/>
+                        android:paddingRight="5dp"
+                        android:src="@drawable/ic_gender" />
+
                     <RadioGroup
                         android:id="@+id/gender"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
+
                         <RadioButton
                             android:id="@+id/femaleRadio"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:paddingRight="5dp"
                             android:text="@string/female"
-                            android:textColor="@color/white"
-                            android:paddingRight="5dp"/>
+                            android:textColor="@color/white" />
+
                         <RadioButton
                             android:id="@+id/maleRadio"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/male"
-                            android:textColor="@color/white"/>
+                            android:textColor="@color/white" />
                     </RadioGroup>
                 </LinearLayout>
-               <!-- <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp">
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_connected"
-                        android:paddingRight="5dp"/>
-                    <LinearLayout
-                        android:paddingLeft="5dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="How are you connected:"
-                            android:textColor="@color/white"/>
-                        <Spinner
-                            android:id="@+id/connectedSpinner"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
+                <!-- <LinearLayout
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:padding="10dp">
+                     <ImageView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:src="@drawable/ic_connected"
+                         android:paddingRight="5dp"/>
+                     <LinearLayout
+                         android:paddingLeft="5dp"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:orientation="vertical">
+                         <TextView
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:text="How are you connected:"
+                             android:textColor="@color/white"/>
+                         <Spinner
+                             android:id="@+id/connectedSpinner"
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content">
 
-                        </Spinner>
-                    </LinearLayout>
-                </LinearLayout>-->
-               <!-- <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp">
+                         </Spinner>
+                     </LinearLayout>
+                 </LinearLayout>-->
+                <!-- <LinearLayout
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:padding="10dp">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:paddingRight="5dp"
-                        android:src="@drawable/ic_aboutme" />
+                     <ImageView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center"
+                         android:paddingRight="5dp"
+                         android:src="@drawable/ic_aboutme" />
 
-                    <EditText
-                        android:id="@+id/aboutMeText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="write something about yourself..."
-                        android:inputType="textMultiLine"
-                        android:textColor="@color/white"
-                        android:textColorHint="@color/white" />
-                </LinearLayout>
--->
+                     <EditText
+                         android:id="@+id/aboutMeText"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:hint="write something about yourself..."
+                         android:inputType="textMultiLine"
+                         android:textColor="@color/white"
+                         android:textColorHint="@color/white" />
+                 </LinearLayout>
+ -->
                 <Button
                     android:id="@+id/getStartedButton"
                     android:layout_width="200dp"

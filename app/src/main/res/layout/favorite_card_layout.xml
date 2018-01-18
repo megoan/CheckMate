@@ -7,16 +7,114 @@
     android:background="?android:attr/selectableItemBackground"
 
     >
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="?android:attr/selectableItemBackground"
         >
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/trans_rectangle_light_purple"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingRight="50dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:paddingRight="45dp">
+
+                    <TextView
+                        android:id="@+id/myName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="My Name"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/myAge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingRight="5dp"
+                        android:text="45" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:orientation="horizontal"
+                    android:paddingRight="45dp">
+
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+
+                        android:text="@string/kashur" />
+
+                    <TextView
+                        android:id="@+id/kashur"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingRight="5dp"
+                        android:text="Bride's X"
+                        android:maxLines="1"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="45dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/event" />
+
+                    <TextView
+                        android:id="@+id/eventName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingRight="5dp"
+                        android:text="friend wedding"
+                        android:maxLines="1"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/removeFavorite"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:src="@android:drawable/ic_delete" />
+        </LinearLayout>
         <RelativeLayout
             android:layout_width="110dp"
-            android:layout_height="110dp"
-            android:elevation="4dp">
+            android:layout_height="110dp">
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imageView"
                 android:layout_width="100dp"
@@ -26,124 +124,30 @@
                 android:src="@drawable/camera_icon"
                 app:civ_border_color="@color/pink"
                 app:civ_border_width="2dp"
-
                 android:layout_margin="5dp"/>
 
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
             <ImageView
                 android:id="@+id/sendImage"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
+
                 android:background="?android:attr/selectableItemBackground"
-                android:elevation="4dp"
+
                 android:src="@drawable/ic_forward"
-                android:rotationY="@integer/angle_rtl_180"
-                android:scaleX="@dimen/scale_rtl_1"
-                />
+               />
+            <ProgressBar
+                android:id="@+id/loadImageProgress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"/>
+            </RelativeLayout>
         </RelativeLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_height="60dp"
-            android:layout_marginLeft="-45dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginStart="-45dp"
-            android:background="@drawable/trans_rectangle_light_purple"
-            android:layout_gravity="center">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:orientation="vertical"
-
-                android:layout_weight="1"
-                >
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="45dp"
-                    android:paddingStart="45dp"
-                    >
-                    <TextView
-                        android:id="@+id/myName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="My Name"
-                        android:layout_gravity="center"
-                        android:textColor="@color/black"
-                        />
-                    <TextView
-                        android:id="@+id/myAge"
-                        android:paddingLeft="5dp"
-                        android:paddingStart="5dp"
-
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="45"
-                        android:layout_gravity="center"
-                        />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="45dp"
-                    android:paddingStart="45dp"
-                    android:orientation="horizontal">
-                    <TextView
-
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/kashur"
-
-                        android:layout_gravity="center"
-                        />
-                    <TextView
-                        android:id="@+id/kashur"
-                        android:paddingLeft="5dp"
-                        android:paddingStart="5dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Bride's X"
-                        android:layout_gravity="center"
-                        />
-                </LinearLayout>
-                <LinearLayout
-                    android:paddingLeft="45dp"
-                    android:paddingStart="45dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Event:"/>
-                    <TextView
-                        android:id="@+id/eventName"
-                        android:paddingLeft="5dp"
-                        android:paddingStart="5dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="friend wedding"/>
-
-                </LinearLayout>
-            </LinearLayout>
-            <ImageView
-                android:id="@+id/removeFavorite"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@android:drawable/ic_delete"
-                android:layout_marginRight="10dp"
-                android:layout_marginEnd="10dp"
-                android:elevation="4dp"
-                android:layout_gravity="center"
-                android:background="?android:attr/selectableItemBackground"/>
-        </LinearLayout>
-
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>

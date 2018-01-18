@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 
@@ -61,6 +62,7 @@ public class EditProfileActivity extends AppCompatActivity {
     Bitmap mBitmap;
     StorageReference storageReference;
     FirebaseStorage storage;
+    ProgressBar loadImageProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +74,7 @@ public class EditProfileActivity extends AppCompatActivity {
         ageSpinner=findViewById(R.id.ageSpinner);
         femaleRadio=findViewById(R.id.femaleRadio);
         maleRadio=findViewById(R.id.maleRadio);
+        loadImageProgress=findViewById(R.id.loadImageProgress);
         getStartedButton=findViewById(R.id.getStartedButton);
         imageView=findViewById(R.id.imageView);
         getSupportActionBar().setTitle(R.string.update_profile);
@@ -85,7 +88,7 @@ public class EditProfileActivity extends AppCompatActivity {
         }
         ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(this,R.layout.age_spinner, items);
         ageSpinner.setAdapter(adapter);
-        ageSpinner.setSelection(3);
+        ageSpinner.setSelection(0);
 
         nameText.setText(Me.ME.getName());
         Gender gender=Me.ME.getGender();
@@ -101,7 +104,17 @@ public class EditProfileActivity extends AppCompatActivity {
                     .fit()
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .placeholder(R.drawable.woman)
-                    .into(imageView);
+                    .into(imageView, new com.squareup.picasso.Callback() {
+                        @Override
+                        public void onSuccess() {
+                            loadImageProgress.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onError() {
+                           loadImageProgress.setVisibility(View.GONE);
+                        }
+                    });
         }
         else {
             Picasso.with(this)
@@ -109,7 +122,17 @@ public class EditProfileActivity extends AppCompatActivity {
                     .fit()
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .placeholder(R.drawable.boy)
-                    .into(imageView);
+                    .into(imageView, new com.squareup.picasso.Callback() {
+                        @Override
+                        public void onSuccess() {
+                            loadImageProgress.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onError() {
+                            loadImageProgress.setVisibility(View.GONE);
+                        }
+                    });
         }
 
         //imageView.setImageBitmap(Me.ME.getImg().getBitmap());
@@ -214,7 +237,7 @@ public class EditProfileActivity extends AppCompatActivity {
     public void inputWarningDialog(String message)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(EditProfileActivity.this);
-        builder.setTitle("Invalid input!");
+        builder.setTitle(getString(R.string.invalid_input));
         builder.setMessage(message);
         builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
             @Override
@@ -231,9 +254,9 @@ public class EditProfileActivity extends AppCompatActivity {
         switch (requestCode) {
             case Utility.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if(userChosenTask.equals("Take Photo"))
+                    if(userChosenTask.equals(getString(R.string.take_photo)))
                         cameraIntent();
-                    else if(userChosenTask.equals("Choose from Library"))
+                    else if(userChosenTask.equals(getString(R.string.choose_from_library)))
                         galleryIntent();
                 } else {
                     //code for deny
@@ -254,12 +277,12 @@ public class EditProfileActivity extends AppCompatActivity {
                 boolean result= Utility.checkPermission(EditProfileActivity.this);
 
                 if (items[item].equals(getString(R.string.take_photo))) {
-                    userChosenTask ="Take Photo";
+                    userChosenTask =getString(R.string.take_photo);
                     if(result)
                         cameraIntent();
 
                 } else if (items[item].equals(getString(R.string.choose_from_library))) {
-                    userChosenTask ="Choose from Library";
+                    userChosenTask =getString(R.string.choose_from_library);
                     if(result)
                         galleryIntent();
 

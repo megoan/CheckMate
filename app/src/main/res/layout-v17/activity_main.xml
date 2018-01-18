@@ -9,7 +9,8 @@
     <FrameLayout
         android:id="@+id/refreshGPS"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="visible">
        <LinearLayout
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
@@ -18,7 +19,7 @@
            <TextView
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:text="Your location is loading..."/>
+               android:text="@string/your_location_is_loading"/>
            <ProgressBar
                android:layout_gravity="center"
                android:layout_width="180dp"
@@ -43,7 +44,7 @@
             android:id="@+id/locationText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="My Location..."
+            android:text="@string/my_location"
             android:layout_weight="1"
             android:layout_gravity="center"
             android:paddingStart="5dp"
@@ -60,7 +61,7 @@
         android:id="@+id/addEvent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="add new event in my Location"
+        android:text="@string/add_new_event_in_my_location"
         android:foreground="?android:attr/selectableItemBackground"
         android:background="@drawable/trans_rectangle_purple"
         android:layout_gravity="center"
@@ -72,6 +73,22 @@
         android:shadowDx="2"
         android:shadowRadius="5"
         android:clickable="true"/>
+    <LinearLayout
+        android:id="@+id/loadingEvents"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loading_events"
+            android:layout_gravity="center"/>
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+    </LinearLayout>
 <android.support.v7.widget.RecyclerView
     android:id="@+id/events"
     android:layout_width="match_parent"

@@ -23,9 +23,9 @@
     <string name="must_enter_gender">you didn\'t enter your gender! you haft to be something!</string>
     <string name="must_enter_image">don\'t be shy and upload a picture!</string>
     <string name="invalid_input">Invalid input!</string>
-    <string name="take_photo">Take Photo</string>
-    <string name="choose_from_library">Choose from Library</string>
-    <string name="add_photo">Add Photo!</string>
+    <string name="take_photo">Take Photo From Camera</string>
+    <string name="choose_from_library">Choose from Gallery</string>
+    <string name="add_photo">Slelect and Crop Photo!</string>
     <string name="select_file">Select File</string>
     <string name="exit_check_mate">Exit Check Mate</string>
     <string name="are_you_sure_you_want_to_leave">are you sure u want to leave?</string>
@@ -41,4 +41,17 @@
     <string name="my_location">My Location...</string>
     <string name="add_new_event_in_my_location">add new event in my Location</string>
     <string name="my_favorites">My Favorites</string>
+    <string name="event">Event:</string>
+    <string name="was_added_to_your_favorites">was added to your favorites!</string>
+    <string name="was_removed_from_your_favorites">was removed from your favorites!</string>
+    <string name="send_info_to_friend">send info to friend</string>
+    <string name="hi_what_do_you_think">HI, what do you think?</string>
+    <string name="hi_i_saw">HI, I saw </string>
+    <string name="at_the_wedding_can_you_send_more_info_please">at the event. can u send me more info please?</string>
+    <string name="get_more_info">get more info</string>
+    <string name="send_info">Send info:</string>
+    <string name="loading_events">Loading events...</string>
+    <string name="exit_event">Exit Event</string>
+    <string name="click_on_the_image_to_change_it">click on the image to change it</string>
+    <string name="click_the_camera_icon_to_select_an_image">click the camera icon to select an image</string>
 </resources>

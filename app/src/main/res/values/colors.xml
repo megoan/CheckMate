@@ -7,4 +7,5 @@
     <color name="pink">#ff00dc</color>
     <color name="black">#000000</color>
     <color name="red">#ff5c49</color>
+    <color name="whiteTransparent">#88ffffff</color>
 </resources>

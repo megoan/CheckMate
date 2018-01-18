@@ -2,8 +2,8 @@
 <resources>
     <string name="app_name">Check-Mate</string>
     <string name="kashur">קשור ל:</string>
-    <string name="would_you_like_to_join">האם תרצה להצטרף ל:</string>
     <string name="join_the_event">הצטרף לאירוע</string>
+    <string name="would_you_like_to_join">האם תרצה להצטרף ל:</string>
     <string name="how_are_you_connected">למי את/ה קשור/ה</string>
     <string name="bride_s_friend">חבר החתן...</string>
     <string name="event_warning">נא שים לב שתוכל להצטרף רק לאירוע יחיד</string>
@@ -48,7 +48,7 @@
     <string name="send_info_to_friend">שלח פרטים לחבר</string>
     <string name="hi_what_do_you_think">שלום, מה אתה חושב</string>
     <string name="hi_i_saw">"שלום, ראיתי את "</string>
-    <string name="at_the_wedding_can_you_send_more_info_please"> באירוע, אפשר עוד פרטים?</string>
+    <string name="at_the_wedding_can_you_send_more_info_please">באירוע, אפשר עוד פרטים?</string>
     <string name="get_more_info">בקש עוד פרטים</string>
     <string name="send_info">שלח פרטים:</string>
     <string name="loading_events">טוען אירועים...</string>

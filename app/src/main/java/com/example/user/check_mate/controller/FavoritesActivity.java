@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -64,6 +65,7 @@ public class FavoritesActivity extends AppCompatActivity {
     CircleImageView mCircleImageView;
     Person person;
     File localFile = null;
+    String message = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,6 +129,7 @@ public class FavoritesActivity extends AppCompatActivity {
             holder.myNane.setText(person.getName());
             holder.myAge.setText(String.valueOf(person.getAge()));
             holder.kashur.setText(person.getKashur());
+            holder.loadImageProgress.setVisibility(View.VISIBLE);
             if (person.getImageUrl() != null) {
                 if (person.getGender() == Gender.FEMALE) {
                     Picasso.with(FavoritesActivity.this)
@@ -134,14 +137,34 @@ public class FavoritesActivity extends AppCompatActivity {
                             .fit()
                             //.memoryPolicy(MemoryPolicy.NO_CACHE)
                             .placeholder(R.drawable.woman)
-                            .into(holder.circleImageView);
+                            .into(holder.circleImageView, new com.squareup.picasso.Callback() {
+                                @Override
+                                public void onSuccess() {
+                                    holder.loadImageProgress.setVisibility(View.GONE);
+                                }
+
+                                @Override
+                                public void onError() {
+                                    holder.loadImageProgress.setVisibility(View.GONE);
+                                }
+                            });
                 } else {
                     Picasso.with(FavoritesActivity.this)
                             .load(person.getImageUrl())
                             .fit()
                             //.memoryPolicy(MemoryPolicy.NO_CACHE)
                             .placeholder(R.drawable.boy)
-                            .into(holder.circleImageView);
+                            .into(holder.circleImageView, new com.squareup.picasso.Callback() {
+                                @Override
+                                public void onSuccess() {
+                                    holder.loadImageProgress.setVisibility(View.GONE);
+                                }
+
+                                @Override
+                                public void onError() {
+                                    holder.loadImageProgress.setVisibility(View.GONE);
+                                }
+                            });
                 }
             }
             holder.circleImageView.setOnClickListener(new View.OnClickListener() {
@@ -155,6 +178,7 @@ public class FavoritesActivity extends AppCompatActivity {
                     ImageView imageView2 = mDialog.findViewById(R.id.close);
                     ImageView showImage = mDialog.findViewById(R.id.goProDialogImage);
                     final ProgressBar progressBar = mDialog.findViewById(R.id.loadImage);
+
                     if (person.getGender() == Gender.FEMALE) {
                         Picasso.with(FavoritesActivity.this)
                                 .load(person.getImageUrl())
@@ -170,7 +194,7 @@ public class FavoritesActivity extends AppCompatActivity {
 
                                     @Override
                                     public void onError() {
-
+                                        progressBar.setVisibility(View.GONE);
                                     }
                                 });
                     } else {
@@ -187,7 +211,7 @@ public class FavoritesActivity extends AppCompatActivity {
 
                                     @Override
                                     public void onError() {
-
+                                        progressBar.setVisibility(View.GONE);
                                     }
                                 });
                     }
@@ -216,7 +240,7 @@ public class FavoritesActivity extends AppCompatActivity {
                             Me.removeFromFavorites(person.get_id(), eventName);
                             addStringToArrayAndSaveToInternalStorage();
                             notifyDataSetChanged();
-                            Toast.makeText(FavoritesActivity.this, person.getName() + getString(R.string.removed_from_favorites), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(FavoritesActivity.this, person.getName() +" "+getString(R.string.removed_from_favorites), Toast.LENGTH_SHORT).show();
                         }
                     });
                     builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -235,60 +259,89 @@ public class FavoritesActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     person = Me.favorites.get(position);
                     //new DownloadImage().execute();
-                    FirebaseStorage storage = FirebaseStorage.getInstance();
-                    StorageReference storageReference = storage.getReference().child("images").child(person.get_id());
-                    try {
-                        File outputDir = FavoritesActivity.this.getExternalCacheDir();
-                        localFile = File.createTempFile("images", ".jpg", outputDir);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    storageReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    AlertDialog.Builder builder2 = new AlertDialog.Builder(FavoritesActivity.this);
+                    builder2.setTitle(R.string.send_info);
+                    // add a radio button list
+                    String[] options = {getString(R.string.send_info_to_friend), getString(R.string.get_more_info)};
+                    int checkedItem = 0; // cow
+                    builder2.setSingleChoiceItems(options, checkedItem, new DialogInterface.OnClickListener() {
                         @Override
-                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                            // Local temp file has been created
-                            Uri imageUri = null;
-                            imageUri = Uri.fromFile(localFile);
-
-                            Intent shareIntent = new Intent();
-                            shareIntent.setAction(Intent.ACTION_SEND);
-                            //Target whatsapp:
-                            shareIntent.setPackage("com.whatsapp");
-                            //Add text and then Image URI
-                            shareIntent.putExtra(Intent.EXTRA_TEXT, "HI, I saw " + person.getName() + " at the wedding. can u send me more info please?");
-                            shareIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
-                            shareIntent.setType("image/jpeg");
-                            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-                            try {
-                                startActivity(shareIntent);
-                            } catch (android.content.ActivityNotFoundException ex) {
-
-                                Toast.makeText(getApplicationContext(), "you don't have whatsApp installed!", Toast.LENGTH_SHORT).show();
-                                Intent emailIntent = new Intent(Intent.ACTION_SEND);
-                                emailIntent.setData(Uri.parse("mailto:"));
-                                emailIntent.setType("text/html");
-                                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Hi what's up?");
-                                emailIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
-                                emailIntent.putExtra(Intent.EXTRA_TEXT, "Please find the details attached....");
-                                emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "\n\n" + "HI, I saw " + person.getName() + " at the wedding. can u send me more info please?");
-                                startActivity(emailIntent);
-                                try {
-                                    startActivity(Intent.createChooser(emailIntent, "Send mail..."));
-                                    finish();
-                                    Log.i("Finished Data", "");
-                                } catch (android.content.ActivityNotFoundException ex2) {
-                                    Toast.makeText(FavoritesActivity.this,
-                                            "No way you can share Reciepies,enjoy alone :-P", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            // Handle any errors
+                        public void onClick(DialogInterface dialog, int which) {
+                            // user checked an item
                         }
                     });
+                    // add OK and Cancel buttons
+                    builder2.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ListView lw = ((AlertDialog) dialog).getListView();
+                            Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
+                            if (checkedItem == getString(R.string.send_info_to_friend)) {
+                                message = getString(R.string.hi_what_do_you_think);
+
+                            } else {
+                                message = getString(R.string.hi_i_saw) + person.getName() + getString(R.string.at_the_wedding_can_you_send_more_info_please);
+                            }
+                            FirebaseStorage storage = FirebaseStorage.getInstance();
+                            StorageReference storageReference = storage.getReference().child("images").child(person.get_id());
+                            try {
+                                File outputDir = FavoritesActivity.this.getExternalCacheDir();
+                                localFile = File.createTempFile("images", ".jpg", outputDir);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            storageReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                    // Local temp file has been created
+                                    Uri imageUri = null;
+                                    imageUri = Uri.fromFile(localFile);
+
+                                    Intent shareIntent = new Intent();
+                                    shareIntent.setAction(Intent.ACTION_SEND);
+                                    //Target whatsapp:
+                                    shareIntent.setPackage("com.whatsapp");
+                                    //Add text and then Image URI
+                                    shareIntent.putExtra(Intent.EXTRA_TEXT, message);
+                                    shareIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
+                                    shareIntent.setType("image/jpeg");
+                                    shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+                                    try {
+                                        startActivity(shareIntent);
+                                    } catch (android.content.ActivityNotFoundException ex) {
+
+                                        Toast.makeText(getApplicationContext(), "you don't have whatsApp installed!", Toast.LENGTH_SHORT).show();
+                                        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                                        emailIntent.setData(Uri.parse("mailto:"));
+                                        emailIntent.setType("text/html");
+                                        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Hi what's up?");
+                                        emailIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
+                                        emailIntent.putExtra(Intent.EXTRA_TEXT, "Please find the details attached....");
+                                        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, message);
+                                        startActivity(emailIntent);
+                                        try {
+                                            startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+                                            finish();
+                                            Log.i("Finished Data", "");
+                                        } catch (android.content.ActivityNotFoundException ex2) {
+                                            Toast.makeText(FavoritesActivity.this,
+                                                    "No way you can share Reciepies,enjoy alone :-P", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception exception) {
+                                    // Handle any errors
+                                }
+                            });
+                        }
+                    });
+                    builder2.setNegativeButton("Cancel", null);
+                    // create and show the alert dialog
+                    AlertDialog dialog2 = builder2.create();
+                    dialog2.show();
 
                 }
             });
@@ -370,6 +423,7 @@ public class FavoritesActivity extends AppCompatActivity {
             ImageView sendImage;
             ImageView removeFromFavorite;
             TextView eventName;
+            ProgressBar loadImageProgress;
 
             public MyViewHolder(View itemView) {
                 super(itemView);
@@ -378,6 +432,7 @@ public class FavoritesActivity extends AppCompatActivity {
                 kashur = (TextView) itemView.findViewById(R.id.kashur);
                 sendImage = (ImageView) itemView.findViewById(R.id.sendImage);
                 circleImageView = (CircleImageView) itemView.findViewById(R.id.imageView);
+                loadImageProgress=(ProgressBar)itemView.findViewById(R.id.loadImageProgress);
                 mCircleImageView = circleImageView;
                 removeFromFavorite = (ImageView) itemView.findViewById(R.id.removeFavorite);
                 eventName = (TextView)itemView.findViewById(R.id.eventName);
