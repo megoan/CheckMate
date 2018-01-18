@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -57,6 +58,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -417,6 +419,9 @@ public class MyEventActivity extends AppCompatActivity {
                 circleImageView = (CircleImageView) itemView.findViewById(R.id.imageView);
                 mCircleImageView = circleImageView;
                 addToFavorite=(ImageView)itemView.findViewById(R.id.addToFavorite);
+                if (CheckRTL.isRTL()) {
+                    sendImage.setScaleX(-1);
+                }
             }
 
         }
@@ -567,4 +572,5 @@ public class MyEventActivity extends AppCompatActivity {
         }
         return file;
     }
+
 }

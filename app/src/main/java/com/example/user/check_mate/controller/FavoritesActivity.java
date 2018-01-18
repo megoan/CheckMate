@@ -208,18 +208,18 @@ public class FavoritesActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     person=Me.favorites.get(position);
                     AlertDialog.Builder builder = new AlertDialog.Builder(FavoritesActivity.this);
-                    builder.setTitle("Delete from favorites");
-                    builder.setMessage("are you sure u want to remove "+person.getName()+" from favorites?");
-                    builder.setPositiveButton("delete", new DialogInterface.OnClickListener() {
+                    builder.setTitle(R.string.delete_from_favorites);
+                    builder.setMessage(getString(R.string.are_you_sure_you_want_to_remove)+person.getName()+getString(R.string.from_favorites));
+                    builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Me.removeFromFavorites(person.get_id(), eventName);
                             addStringToArrayAndSaveToInternalStorage();
                             notifyDataSetChanged();
-                            Toast.makeText(FavoritesActivity.this, person.getName() + " was removed from your favorites!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(FavoritesActivity.this, person.getName() + getString(R.string.removed_from_favorites), Toast.LENGTH_SHORT).show();
                         }
                     });
-                    builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                         }
@@ -381,6 +381,9 @@ public class FavoritesActivity extends AppCompatActivity {
                 mCircleImageView = circleImageView;
                 removeFromFavorite = (ImageView) itemView.findViewById(R.id.removeFavorite);
                 eventName = (TextView)itemView.findViewById(R.id.eventName);
+                if (CheckRTL.isRTL()) {
+                    sendImage.setScaleX(-1);
+                }
             }
 
         }

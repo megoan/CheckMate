@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,6 +16,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -275,7 +277,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         if (editText.getText().toString() == null || editText.getText().toString().length() == 0) {
-                            Toast.makeText(getApplicationContext(), "can't leave event name empty!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), R.string.dont_leave_name_empty, Toast.LENGTH_LONG).show();
                         } else {
                             myEvents.setEventName(editText.getText().toString());
                             try {
@@ -448,12 +450,10 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View view) {
                                 if (connectedView.getText().toString() == null || connectedView.getText().toString().length() == 0) {
-                                    Toast.makeText(MainActivity.this, "can't leave field empty!", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(MainActivity.this, R.string.cant_leave_field_empty, Toast.LENGTH_LONG).show();
                                 } else {
                                     if (Me.ME.isAtEvent()) {
-
-
-                                        backEndFuncForFirebase.removePersonFromEvent(Me.ME.getEventId(), Me.ME.get_id());
+                                            backEndFuncForFirebase.removePersonFromEvent(Me.ME.getEventId(), Me.ME.get_id());
                                     }
 
                                     Intent intent = new Intent(MainActivity.this, MyEventActivity.class);
@@ -476,6 +476,18 @@ public class MainActivity extends AppCompatActivity {
                                     //backEndFunc.updateEvent(event);
                                     //backEndFunc.updatePerson(Me.ME);
                                     alertDialog.dismiss();
+
+                                    SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                                    SharedPreferences.Editor editor=sharedPreferences.edit();
+                                    editor.putString("ID",Me.ME.get_id());
+                                    editor.putString("NAME",Me.ME.getName());
+                                    editor.putString("GENDER", String.valueOf(Me.ME.getGender()));
+                                    editor.putInt("AGE",Me.ME.getAge());
+                                    editor.putString("IMAGEURL",Me.ME.getImageUrl());
+                                    editor.putBoolean("ATEVENT",Me.ME.isAtEvent());
+                                    editor.putString("EVENTID",Me.ME.getEventId());
+                                    editor.putString("KASHUR",Me.ME.getKashur());
+                                    editor.commit();
                                     startActivity(intent);
                                 }
                             }
@@ -567,16 +579,22 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setTitle("Exit Check Mate");
-        builder.setMessage("are you sure u want to leave? ");
-        builder.setPositiveButton("exit", new DialogInterface.OnClickListener() {
+
+        builder.setTitle(R.string.exit_check_mate);
+
+        builder.setMessage(R.string.are_you_sure_you_want_to_leave);
+
+        builder.setPositiveButton(R.string.exit, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                ExitActivity.exitApplicationAndRemoveFromRecent(MainActivity.this);
                 finish();
                 System.exit(0);
+
             }
         });
-        builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
             }
@@ -609,17 +627,20 @@ public class MainActivity extends AppCompatActivity {
 
     public void makeUseOfNewLocation(Location location) {
         List<Address> addresses = null;
+        List<Address> addressesEnglish = null;
         Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
+        Geocoder geocoderEnglish=new Geocoder(MainActivity.this,Locale.ENGLISH);
         MyLocation myLocation = new MyLocation();
 
         try {
+            addressesEnglish=geocoderEnglish.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
             addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if (addresses != null && addresses.size() > 0) {
-            myLocation.setCountry(addresses.get(0).getCountryName());
-            myLocation.setCity(addresses.get(0).getLocality());
+        if (addresses != null && addresses.size() > 0 && addressesEnglish!=null && addressesEnglish.size()>0) {
+            myLocation.setCountry(addressesEnglish.get(0).getCountryName());
+            myLocation.setCity(addressesEnglish.get(0).getLocality());
             myLocation.setLatitude(location.getLatitude());
             myLocation.setLongitude(location.getLongitude());
 

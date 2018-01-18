@@ -33,15 +33,12 @@
                 android:id="@+id/sendImage"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
+
                 android:background="?android:attr/selectableItemBackground"
                 android:elevation="4dp"
-                android:src="@drawable/ic_forward"
-                android:rotationY="@integer/angle_rtl_180"
-                android:scaleX="@dimen/scale_rtl_1"
-                />
+                android:src="@drawable/ic_forward" />
         </RelativeLayout>
 
 
@@ -49,10 +46,8 @@
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_height="60dp"
-            android:layout_marginLeft="-45dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginEnd="20dp"
             android:layout_marginStart="-45dp"
+            android:layout_marginEnd="20dp"
             android:background="@drawable/trans_rectangle_light_purple"
             android:layout_gravity="center">
 
@@ -66,7 +61,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="45dp"
+                    android:layout_gravity="start"
                     android:paddingStart="45dp"
                     >
                     <TextView
@@ -79,9 +74,7 @@
                         />
                     <TextView
                         android:id="@+id/myAge"
-                        android:paddingLeft="5dp"
                         android:paddingStart="5dp"
-
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="45"
@@ -91,20 +84,19 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="45dp"
+                    android:layout_gravity="start"
                     android:paddingStart="45dp"
                     android:orientation="horizontal">
                     <TextView
 
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/kashur"
+                        android:text="Kashur:"
 
                         android:layout_gravity="center"
                         />
                     <TextView
                         android:id="@+id/kashur"
-                        android:paddingLeft="5dp"
                         android:paddingStart="5dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -113,7 +105,6 @@
                         />
                 </LinearLayout>
                 <LinearLayout
-                    android:paddingLeft="45dp"
                     android:paddingStart="45dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -124,7 +115,6 @@
                         android:text="Event:"/>
                     <TextView
                         android:id="@+id/eventName"
-                        android:paddingLeft="5dp"
                         android:paddingStart="5dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -137,7 +127,6 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@android:drawable/ic_delete"
-                android:layout_marginRight="10dp"
                 android:layout_marginEnd="10dp"
                 android:elevation="4dp"
                 android:layout_gravity="center"

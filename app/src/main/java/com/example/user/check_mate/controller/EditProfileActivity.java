@@ -74,7 +74,7 @@ public class EditProfileActivity extends AppCompatActivity {
         maleRadio=findViewById(R.id.maleRadio);
         getStartedButton=findViewById(R.id.getStartedButton);
         imageView=findViewById(R.id.imageView);
-        getSupportActionBar().setTitle("Update profile");
+        getSupportActionBar().setTitle(R.string.update_profile);
 
 
 
@@ -126,10 +126,10 @@ public class EditProfileActivity extends AppCompatActivity {
                 if(femaleRadio.isChecked())gender=Gender.FEMALE;
                 else if(maleRadio.isChecked())gender=Gender.MALE;
                 Me.ME.setGender(gender);
-                if(Me.ME.getName()==null || Me.ME.getName().length()==0)inputWarningDialog("must enter your name!");
-                else if(Me.ME.getAge()==0)inputWarningDialog("must enter age!");
-                else if(Me.ME.getGender()==null)inputWarningDialog("you didn't enter your gender! you haft to be something!");
-                else if(Me.ME.getImageUrl()==null)inputWarningDialog("don't be shy and upload a picture!");
+                if(Me.ME.getName()==null || Me.ME.getName().length()==0)inputWarningDialog(getString(R.string.must_enter_name));
+                else if(Me.ME.getAge()==0)inputWarningDialog(getString(R.string.must_enter_age));
+                else if(Me.ME.getGender()==null)inputWarningDialog(getString(R.string.must_enter_gender));
+                else if(Me.ME.getImageUrl()==null)inputWarningDialog(getString(R.string.must_enter_image));
 
                 else
                 {
@@ -241,27 +241,27 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void selectImage() {
-        final CharSequence[] items = { "Take Photo", "Choose from Library",
-                "Cancel" };
+        final CharSequence[] items = { getString(R.string.take_photo), getString(R.string.choose_from_library),
+                getString(R.string.cancel) };
 
         AlertDialog.Builder builder = new AlertDialog.Builder(EditProfileActivity.this);
-        builder.setTitle("Add Photo!");
+        builder.setTitle(R.string.add_photo);
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 boolean result= Utility.checkPermission(EditProfileActivity.this);
 
-                if (items[item].equals("Take Photo")) {
+                if (items[item].equals(getString(R.string.take_photo))) {
                     userChosenTask ="Take Photo";
                     if(result)
                         cameraIntent();
 
-                } else if (items[item].equals("Choose from Library")) {
+                } else if (items[item].equals(getString(R.string.choose_from_library))) {
                     userChosenTask ="Choose from Library";
                     if(result)
                         galleryIntent();
 
-                } else if (items[item].equals("Cancel")) {
+                } else if (items[item].equals( getString(R.string.cancel))) {
                     dialog.dismiss();
                 }
             }
@@ -271,7 +271,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private void galleryIntent()
     {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(Intent.createChooser(intent, "Select File"),SELECT_FILE);
+        startActivityForResult(Intent.createChooser(intent, getString(R.string.select_file)),SELECT_FILE);
     }
 
     private void cameraIntent()

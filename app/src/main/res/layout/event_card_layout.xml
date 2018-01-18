@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_enter"
             android:layout_gravity="center"
-
+            android:rotationY="@integer/angle_rtl_180"
             />
     </LinearLayout>
 </android.support.v7.widget.CardView>

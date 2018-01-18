@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Check-Mate</string>
+    <string name="kashur">קשור ל:</string>
+    <string name="would_you_like_to_join">האם תרצה להצטרף ל:</string>
+    <string name="join_the_event">הצטרף לאירוע</string>
+    <string name="how_are_you_connected">למי את/ה קשור/ה</string>
+    <string name="bride_s_friend">חבר החתן...</string>
+    <string name="event_warning">נא שים לב שתוכל להצטרף רק לאירוע יחיד</string>
+    <string name="cancel">ביטול</string>
+    <string name="join">הצטרף</string>
+    <string name="add_event">הוסף אירוע</string>
+    <string name="event_name">שם האירוע</string>
+    <string name="please_don_t_add_unnecessary_events">נא אל תוסיף אירועים ללא צורך</string>
+    <string name="add_your_event">הוסף אירוע</string>
+    <string name="your_location_is_loading">מיקומך נטען</string>
+    <string name="my_name">שם</string>
+    <string name="female">נקבה</string>
+    <string name="get_started">התחל</string>
+    <string name="male">זכר</string>
+    <string name="update">עדכן</string>
+    <string name="must_enter_name">חובה למלא את שדה השם</string>
+    <string name="must_enter_age">חובה למלא את שדה הגיל</string>
+    <string name="must_enter_gender">חובה למלא את שדה המין</string>
+    <string name="must_enter_image">אל תתבייש/י ותעלה תמונה</string>
+    <string name="invalid_input">פרטים שגואים</string>
+    <string name="take_photo">צלם</string>
+    <string name="choose_from_library">בחר מהגלריה</string>
+    <string name="add_photo">הוסף תמונה!</string>
+    <string name="select_file">בחר קובץ!</string>
+    <string name="exit_check_mate">צא מהאפליקציה</string>
+    <string name="are_you_sure_you_want_to_leave">האם את/ה בטוח שתרצה לצאת?</string>
+    <string name="exit">צא</string>
+    <string name="removed_from_favorites">נמחק מרשימת המועדפים</string>
+    <string name="from_favorites">מרשימת המועדפים?</string>
+    <string name="are_you_sure_you_want_to_remove">האם את/ה בטוח/ה שתרצה/י להסיר את</string>
+    <string name="delete">מחק</string>
+    <string name="delete_from_favorites">מחק מרשימת המועדפים</string>
+    <string name="update_profile">עדכן פרופיל</string>
+    <string name="dont_leave_name_empty">אי אפשר להשאיר שם ריק!</string>
+    <string name="cant_leave_field_empty">אי אפשר להשאיר שדה ריק!</string>
+</resources>

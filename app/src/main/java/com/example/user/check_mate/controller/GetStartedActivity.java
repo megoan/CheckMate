@@ -116,11 +116,11 @@ public class GetStartedActivity extends AppCompatActivity {
                 if(femaleRadio.isChecked())gender=Gender.FEMALE;
                 else if(maleRadio.isChecked())gender=Gender.MALE;
                 Me.ME.setGender(gender);
-                if(Me.ME.getName()==null || Me.ME.getName().length()==0)inputWarningDialog("must enter your name!");
-                else if(Me.ME.getAge()==0)inputWarningDialog("must enter age!");
-                else if(Me.ME.getGender()==null)inputWarningDialog("you didn't enter your gender! you haft to be something!");
-                else if(Me.ME.getImageUrl()==null)inputWarningDialog("don't be shy and upload a picture!");
-                else if(!imageSelected)inputWarningDialog("don't be shy and upload a picture!");
+                if(Me.ME.getName()==null || Me.ME.getName().length()==0)inputWarningDialog(getString(R.string.must_enter_name));
+                else if(Me.ME.getAge()==0)inputWarningDialog(getString(R.string.must_enter_age));
+                else if(Me.ME.getGender()==null)inputWarningDialog(getString(R.string.must_enter_gender));
+                else if(Me.ME.getImageUrl()==null)inputWarningDialog(getString(R.string.must_enter_image));
+                else if(!imageSelected)inputWarningDialog(getString(R.string.must_enter_image));
                 else
                 {
                     try {
@@ -163,7 +163,7 @@ public class GetStartedActivity extends AppCompatActivity {
     public void inputWarningDialog(String message)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(GetStartedActivity.this);
-        builder.setTitle("Invalid input!");
+        builder.setTitle(R.string.invalid_input);
         builder.setMessage(message);
         builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
             @Override
@@ -191,27 +191,27 @@ public class GetStartedActivity extends AppCompatActivity {
     }
 
     private void selectImage() {
-        final CharSequence[] items = { "Take Photo", "Choose from Library",
-                "Cancel" };
+        final CharSequence[] items = { getString(R.string.take_photo), getString(R.string.choose_from_library),
+                getString(R.string.cancel) };
 
         AlertDialog.Builder builder = new AlertDialog.Builder(GetStartedActivity.this);
-        builder.setTitle("Add Photo!");
+        builder.setTitle(R.string.add_photo);
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 boolean result= Utility.checkPermission(GetStartedActivity.this);
 
-                if (items[item].equals("Take Photo")) {
+                if (items[item].equals(getString(R.string.take_photo))) {
                     userChosenTask ="Take Photo";
                     if(result)
                         cameraIntent();
 
-                } else if (items[item].equals("Choose from Library")) {
+                } else if (items[item].equals(getString(R.string.choose_from_library))) {
                     userChosenTask ="Choose from Library";
                     if(result)
                         galleryIntent();
 
-                } else if (items[item].equals("Cancel")) {
+                } else if (items[item].equals( getString(R.string.cancel))) {
                     dialog.dismiss();
                 }
             }
@@ -221,7 +221,7 @@ public class GetStartedActivity extends AppCompatActivity {
     private void galleryIntent()
     {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(Intent.createChooser(intent, "Select File"),SELECT_FILE);
+        startActivityForResult(Intent.createChooser(intent, getString(R.string.select_file)),SELECT_FILE);
     }
 
     private void cameraIntent()
@@ -273,11 +273,11 @@ public class GetStartedActivity extends AppCompatActivity {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(GetStartedActivity.this);
 
-        builder.setTitle("Exit Check Mate");
+        builder.setTitle(R.string.exit_check_mate);
 
-        builder.setMessage("are you sure u want to leave? ");
+        builder.setMessage(R.string.are_you_sure_you_want_to_leave);
 
-        builder.setPositiveButton("exit", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.exit, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 ExitActivity.exitApplicationAndRemoveFromRecent(GetStartedActivity.this);
@@ -287,7 +287,7 @@ public class GetStartedActivity extends AppCompatActivity {
             }
         });
 
-        builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
             }

@@ -10,7 +10,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Event"
+        android:text="@string/add_event"
         android:layout_gravity="center"
         android:padding="10dp"
         android:textSize="20sp"/>
@@ -19,14 +19,14 @@
         android:id="@+id/eventNameView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Event name"
+        android:hint="@string/event_name"
         android:padding="5dp"/>
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="please don't add unnecessary events!"
+        android:text="@string/please_don_t_add_unnecessary_events"
         android:padding="10dp"
         android:textColor="@color/black"/>
 
@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_gravity="center"
         android:layout_height="wrap_content"
-        android:text="Add your Event"
+        android:text="@string/add_your_event"
         android:padding="15dp"
         android:textColor="@color/white"
         android:background="@drawable/trans_rectangle_purple"/>
