@@ -39,4 +39,7 @@
     <string name="update_profile">עדכן פרופיל</string>
     <string name="dont_leave_name_empty">אי אפשר להשאיר שם ריק!</string>
     <string name="cant_leave_field_empty">אי אפשר להשאיר שדה ריק!</string>
+    <string name="my_location">המיקום שלי...</string>
+    <string name="add_new_event_in_my_location">הוסף אירוע חדש במקום שלי</string>
+    <string name="my_favorites">רשימת מועדפים</string>
 </resources>

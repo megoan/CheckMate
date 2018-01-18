@@ -80,7 +80,7 @@ public class FavoritesActivity extends AppCompatActivity {
         personRecyclerView.setLayoutManager(linearLayoutManager);
         personAdapter = new FavoritePersonAdapter(this);
         personRecyclerView.setAdapter(personAdapter);
-        getSupportActionBar().setTitle("My Favorites");
+        getSupportActionBar().setTitle(R.string.my_favorites);
     }
    /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {

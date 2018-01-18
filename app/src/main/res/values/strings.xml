@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Check-Mate</string>
     <string name="kashur">connected to:</string>
-    <string name="join_the_event">Join the Event</string>
+    <string name="join_the_event">Join the event</string>
     <string name="would_you_like_to_join">would you like to join:</string>
     <string name="how_are_you_connected">how are you connected?</string>
     <string name="bride_s_friend">Bride\'s friend...</string>
@@ -38,4 +38,7 @@
     <string name="update_profile">Update profile</string>
     <string name="dont_leave_name_empty">can\'t leave event name empty!</string>
     <string name="cant_leave_field_empty">can\'t leave field empty!</string>
+    <string name="my_location">My Location...</string>
+    <string name="add_new_event_in_my_location">add new event in my Location</string>
+    <string name="my_favorites">My Favorites</string>
 </resources>

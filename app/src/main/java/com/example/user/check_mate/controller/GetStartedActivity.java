@@ -110,8 +110,6 @@ public class GetStartedActivity extends AppCompatActivity {
                 person.setName(nameText.getText().toString());
                 Me.ME.setName(nameText.getText().toString());
                 Me.ME.setAge((Integer) ageSpinner.getSelectedItem());
-                Me.ME.setImageUrl("blalala");
-
                 Gender gender=null;
                 if(femaleRadio.isChecked())gender=Gender.FEMALE;
                 else if(maleRadio.isChecked())gender=Gender.MALE;
@@ -119,7 +117,6 @@ public class GetStartedActivity extends AppCompatActivity {
                 if(Me.ME.getName()==null || Me.ME.getName().length()==0)inputWarningDialog(getString(R.string.must_enter_name));
                 else if(Me.ME.getAge()==0)inputWarningDialog(getString(R.string.must_enter_age));
                 else if(Me.ME.getGender()==null)inputWarningDialog(getString(R.string.must_enter_gender));
-                else if(Me.ME.getImageUrl()==null)inputWarningDialog(getString(R.string.must_enter_image));
                 else if(!imageSelected)inputWarningDialog(getString(R.string.must_enter_image));
                 else
                 {
@@ -179,9 +176,9 @@ public class GetStartedActivity extends AppCompatActivity {
         switch (requestCode) {
             case Utility.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if(userChosenTask.equals("Take Photo"))
+                    if(userChosenTask.equals(getString(R.string.take_photo)))
                         cameraIntent();
-                    else if(userChosenTask.equals("Choose from Library"))
+                    else if(userChosenTask.equals(getString(R.string.choose_from_library)))
                         galleryIntent();
                 } else {
                     //code for deny
@@ -202,12 +199,12 @@ public class GetStartedActivity extends AppCompatActivity {
                 boolean result= Utility.checkPermission(GetStartedActivity.this);
 
                 if (items[item].equals(getString(R.string.take_photo))) {
-                    userChosenTask ="Take Photo";
+                    userChosenTask =getString(R.string.take_photo);
                     if(result)
                         cameraIntent();
 
                 } else if (items[item].equals(getString(R.string.choose_from_library))) {
-                    userChosenTask ="Choose from Library";
+                    userChosenTask =getString(R.string.choose_from_library);
                     if(result)
                         galleryIntent();
 

@@ -119,14 +119,16 @@ public class EditProfileActivity extends AppCompatActivity {
         getStartedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Me.ME.setName(nameText.getText().toString());
+                String name=nameText.getText().toString();
+                if (name!=null && name.length()>0) {
+                    Me.ME.setName(name);
+                }
                 Me.ME.setAge((Integer) ageSpinner.getSelectedItem());
-                Me.ME.setImageUrl("blalala");
                 Gender gender=null;
                 if(femaleRadio.isChecked())gender=Gender.FEMALE;
                 else if(maleRadio.isChecked())gender=Gender.MALE;
                 Me.ME.setGender(gender);
-                if(Me.ME.getName()==null || Me.ME.getName().length()==0)inputWarningDialog(getString(R.string.must_enter_name));
+                if(name==null || name.length()==0)inputWarningDialog(getString(R.string.must_enter_name));
                 else if(Me.ME.getAge()==0)inputWarningDialog(getString(R.string.must_enter_age));
                 else if(Me.ME.getGender()==null)inputWarningDialog(getString(R.string.must_enter_gender));
                 else if(Me.ME.getImageUrl()==null)inputWarningDialog(getString(R.string.must_enter_image));
