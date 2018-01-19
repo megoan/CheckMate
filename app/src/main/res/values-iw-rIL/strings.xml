@@ -55,4 +55,5 @@
     <string name="exit_event">צא/י מהאירוע</string>
     <string name="click_on_the_image_to_change_it">לחץ/י על התמונה כדי לעדכנה</string>
     <string name="click_the_camera_icon_to_select_an_image">לחץ/י על האייקון של המצלמה כדי לבחור תמונה</string>
+    <string name="there_are_no_events_in_your_location">אין אירועים באיזור שלך</string>
 </resources>

@@ -337,7 +337,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
 
-
     private void createLocationRequest() {
         locationRequest = new LocationRequest();
         locationRequest.setInterval(UPDATE_INTERVAL);
@@ -407,7 +406,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     @Override
     public void onLocationChanged(Location location) {
-        mLastLocation=location;
+        mLastLocation = location;
         getGoogleLocation();
     }
 
@@ -461,7 +460,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                                     Toast.makeText(MainActivity.this, R.string.cant_leave_field_empty, Toast.LENGTH_LONG).show();
                                 } else {
                                     if (Me.ME.isAtEvent()) {
-                                            backEndFuncForFirebase.removePersonFromEvent(Me.ME.getEventId(), Me.ME.get_id());
+                                        backEndFuncForFirebase.removePersonFromEvent(Me.ME.getEventId(), Me.ME.get_id());
                                     }
 
                                     Intent intent = new Intent(MainActivity.this, MyEventActivity.class);
@@ -485,16 +484,16 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                                     //backEndFunc.updatePerson(Me.ME);
                                     alertDialog.dismiss();
 
-                                    SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-                                    SharedPreferences.Editor editor=sharedPreferences.edit();
-                                    editor.putString("ID",Me.ME.get_id());
-                                    editor.putString("NAME",Me.ME.getName());
+                                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    editor.putString("ID", Me.ME.get_id());
+                                    editor.putString("NAME", Me.ME.getName());
                                     editor.putString("GENDER", String.valueOf(Me.ME.getGender()));
-                                    editor.putInt("AGE",Me.ME.getAge());
-                                    editor.putString("IMAGEURL",Me.ME.getImageUrl());
-                                    editor.putBoolean("ATEVENT",Me.ME.isAtEvent());
-                                    editor.putString("EVENTID",Me.ME.getEventId());
-                                    editor.putString("KASHUR",Me.ME.getKashur());
+                                    editor.putInt("AGE", Me.ME.getAge());
+                                    editor.putString("IMAGEURL", Me.ME.getImageUrl());
+                                    editor.putBoolean("ATEVENT", Me.ME.isAtEvent());
+                                    editor.putString("EVENTID", Me.ME.getEventId());
+                                    editor.putString("KASHUR", Me.ME.getKashur());
                                     editor.commit();
                                     startActivity(intent);
                                 }
@@ -543,9 +542,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         builder.setPositiveButton(R.string.exit, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                ExitActivity.exitApplicationAndRemoveFromRecent(MainActivity.this);
+                //ExitActivity.exitApplicationAndRemoveFromRecent(MainActivity.this);
                 finish();
-                System.exit(0);
+                //System.exit(0);
 
             }
         });
@@ -563,16 +562,16 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         List<Address> addresses = null;
         List<Address> addressesEnglish = null;
         Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
-        Geocoder geocoderEnglish=new Geocoder(MainActivity.this,Locale.ENGLISH);
+        Geocoder geocoderEnglish = new Geocoder(MainActivity.this, Locale.ENGLISH);
 
 
         try {
-            addressesEnglish=geocoderEnglish.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+            addressesEnglish = geocoderEnglish.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
             addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if (addresses != null && addresses.size() > 0 && addressesEnglish!=null && addressesEnglish.size()>0) {
+        if (addresses != null && addresses.size() > 0 && addressesEnglish != null && addressesEnglish.size() > 0) {
             myOwnLocation.setCountry(addressesEnglish.get(0).getCountryName());
             myOwnLocation.setCity(addressesEnglish.get(0).getLocality());
             myOwnLocation.setLatitude(location.getLatitude());
@@ -585,8 +584,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         }
     }
 
-    public class LoadEvents extends AsyncTask<Void,Events,Void>
-    {
+    public class LoadEvents extends AsyncTask<Void, Events, Void> {
         MyLocation myLocation;
 
         public LoadEvents(MyLocation myLocation) {
@@ -603,10 +601,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         @Override
         protected void onProgressUpdate(Events... values) {
             super.onProgressUpdate(values);
-            if (values[0]!=null) {
-                for(Events events5: eventAdapter.events)
-                {
-                    if(events5.getFirebaseID().equals(values[0].getFirebaseID())){
+            if(values[0].getFirebaseID().equals("there are no events"))
+            {
+                linearLayout.setVisibility(View.GONE);
+                Toast.makeText(MainActivity.this, R.string.there_are_no_events_in_your_location,Toast.LENGTH_LONG).show();
+                return;
+            }
+            if (values[0] != null) {
+                for (Events events5 : eventAdapter.events) {
+                    if (events5.getFirebaseID().equals(values[0].getFirebaseID())) {
                         return;
                     }
                 }
@@ -630,14 +633,23 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             database.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    String empty = "there are no events";
+                    int i = 0;
                     for (final DataSnapshot item : dataSnapshot.getChildren()) {
                         events3 = item.getValue(Events.class);
-                        events3=backEndFuncForFirebase.getEventByLocation(new MyLocation(myLocation.getLatitude(), myLocation.getLongitude()), 200, events3);
-                        if(events!=null){
+                        events3 = backEndFuncForFirebase.getEventByLocation(new MyLocation(myLocation.getLatitude(), myLocation.getLongitude()), 200, events3);
+                        if (events != null) {
+                            i++;
                             publishProgress(events3);
                         }
                     }
+                    if (i == 0) {
+                        Events emptyEvent=new Events();
+                        emptyEvent.setFirebaseID(empty);
+                        publishProgress(emptyEvent);
+                    }
                 }
+
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
 
@@ -650,20 +662,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     protected void onStart() {
         super.onStart();
-        if(googleApiClient!=null)
-        {
+        if (googleApiClient != null) {
             googleApiClient.connect();
         }
-       // getGoogleLocation();
+        // getGoogleLocation();
     }
 
     @Override
     protected void onStop() {
 
-        LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient,this);
-        if(googleApiClient!=null)
-        {
-           googleApiClient.disconnect();
+        LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
+        if (googleApiClient != null) {
+            googleApiClient.disconnect();
         }
         super.onStop();
     }
@@ -673,6 +683,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         super.onResume();
         switchOnGPS();
     }
+
     private void switchOnGPS() {
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
                 .addLocationRequest(new LocationRequest().setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY));
@@ -683,14 +694,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             public void onComplete(@NonNull Task<LocationSettingsResponse> task) {
                 try {
                     LocationSettingsResponse response = task.getResult(ApiException.class);
-                    mRequestLocationUpdates=true;
+                    mRequestLocationUpdates = true;
                 } catch (ApiException e) {
-                    switch (e.getStatusCode())
-                    {
-                        case LocationSettingsStatusCodes.RESOLUTION_REQUIRED :
+                    switch (e.getStatusCode()) {
+                        case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                             ResolvableApiException resolvableApiException = (ResolvableApiException) e;
                             try {
-                                resolvableApiException.startResolutionForResult(MainActivity.this,11);
+                                resolvableApiException.startResolutionForResult(MainActivity.this, 11);
                             } catch (IntentSender.SendIntentException e1) {
                                 e1.printStackTrace();
                             }

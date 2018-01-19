@@ -57,15 +57,18 @@ public class SplashActivity extends AppCompatActivity {
             Me.ME.setKashur(sharedPreferences.getString("KASHUR",null));
 
             Intent intent =new Intent(SplashActivity.this,MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra("id",sharedPreferences.getString("ID",null));
-            //loadPerson(sharedPreferences.getString("ID",null));
             startActivity(intent);
             finish();
+            //loadPerson(sharedPreferences.getString("ID",null));
+
+
         }
         else {
             Intent intent=new Intent(SplashActivity.this,GetStartedActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+
             startActivity(intent);
             finish();
         }

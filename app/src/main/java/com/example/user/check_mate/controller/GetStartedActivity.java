@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 
@@ -138,8 +139,9 @@ public class GetStartedActivity extends AppCompatActivity {
                     editor.putString("KASHUR",Me.ME.getKashur());
                     editor.commit();
                     intent.putExtra("ID",Me.ME.get_id());
-                    startActivity(intent);
                     finish();
+                    startActivity(intent);
+
 
                 }
             }
@@ -189,12 +191,46 @@ public class GetStartedActivity extends AppCompatActivity {
     }
 
     private void selectImage() {
-        final CharSequence[] items = { getString(R.string.take_photo), getString(R.string.choose_from_library),
-                getString(R.string.cancel) };
+        final CharSequence[] items = {getString(R.string.take_photo), getString(R.string.choose_from_library)};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(GetStartedActivity.this);
         builder.setTitle(R.string.add_photo);
-        builder.setItems(items, new DialogInterface.OnClickListener() {
+
+
+
+        int checkedItem = 0; // cow
+        builder.setSingleChoiceItems(items, checkedItem, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // user checked an item
+            }
+        });
+        builder.setPositiveButton("OK",new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                boolean result= Utility.checkPermission(GetStartedActivity.this);
+                ListView lw = ((AlertDialog) dialog).getListView();
+                Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
+                if (checkedItem == getString(R.string.take_photo)) {
+                    userChosenTask = getString(R.string.take_photo);
+                    if(result)
+                        cameraIntent();
+                }
+                else {
+                    userChosenTask =getString(R.string.choose_from_library);
+                    if(result)
+                        galleryIntent();
+                }
+            }
+        });
+        builder.setNegativeButton("cancel", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+
+        /*builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 boolean result= Utility.checkPermission(GetStartedActivity.this);
@@ -213,7 +249,7 @@ public class GetStartedActivity extends AppCompatActivity {
                     dialog.dismiss();
                 }
             }
-        });
+        });*/
         builder.show();
     }
     private void galleryIntent()
@@ -278,7 +314,7 @@ public class GetStartedActivity extends AppCompatActivity {
         builder.setPositiveButton(R.string.exit, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                ExitActivity.exitApplicationAndRemoveFromRecent(GetStartedActivity.this);
+                //ExitActivity.exitApplicationAndRemoveFromRecent(GetStartedActivity.this);
                 finish();
                 System.exit(0);
 
