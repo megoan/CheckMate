@@ -240,6 +240,14 @@
                     android:background="@drawable/trans_rectangle_white"
                     android:text="@string/update"
                     android:textColor="@color/pink" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="exit and reenter the event your in\nto update your info in your event"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"/>
             </LinearLayout>
         </ScrollView>
     </android.support.constraint.ConstraintLayout>

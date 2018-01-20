@@ -56,4 +56,17 @@
     <string name="click_on_the_image_to_change_it">לחץ/י על התמונה כדי לעדכנה</string>
     <string name="click_the_camera_icon_to_select_an_image">לחץ/י על האייקון של המצלמה כדי לבחור תמונה</string>
     <string name="there_are_no_events_in_your_location">אין אירועים באיזור שלך</string>
+    <string name="your_message">ההודעה שלך</string>
+    <string name="send">שלח/י</string>
+    <string-array name="contact_options">
+        <item>דוח על שגיאה</item>
+        <item>יש לך ראיונות לשתף</item>
+        <item>סתם שלום</item>
+        <item>מחק/י חשבון</item>
+    </string-array>
+    <string name="delete_account_message">האם אתה בטוח שתרצה/י לסמחוק את המשתמש שלך?   במידה וכן פרטיך ימחקו והאפליקצייה תסגר</string>
+    <string name="cant_leave_message_empty">לא תוכל/י להשאיר את ההודעה ריק</string>
+    <string name="contact_us">צור קשר</string>
+    <string name="we_d">אנו</string>
+    <string name="to_help">לשמוע ולעזור</string>
 </resources>

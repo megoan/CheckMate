@@ -228,6 +228,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         btnLoc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (googleApiClient != null) {
+                    googleApiClient.connect();
+                }
             }
         });
 
@@ -311,9 +314,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
                 Intent intentProfile = new Intent(MainActivity.this, FavoritesActivity.class);
                 startActivity(intentProfile);
+                break;
             }
 
-            break;
+            case R.id.contact: {
+
+                Intent intentProfile = new Intent(MainActivity.this, ContactActivity.class);
+                startActivity(intentProfile);
+                break;
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -391,7 +400,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
+        if (googleApiClient.isConnected()) {
+            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
+        }
     }
 
     @Override
@@ -581,6 +592,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             locationText.setText(address);
             new LoadEvents(myOwnLocation).execute();
             locationManagerInternet.removeUpdates(locationListener);
+
+
+            LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
+            if (googleApiClient != null) {
+                googleApiClient.disconnect();
+            }
         }
     }
 
@@ -671,9 +688,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     protected void onStop() {
 
-        LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
-        if (googleApiClient != null) {
-            googleApiClient.disconnect();
+        if(googleApiClient.isConnected()) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
+            if (googleApiClient != null) {
+                googleApiClient.disconnect();
+            }
         }
         super.onStop();
     }

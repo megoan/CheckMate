@@ -185,6 +185,12 @@ public class MyEventActivity extends AppCompatActivity {
                 startActivity(intentProfile);
                 break;
             }
+            case R.id.contact: {
+
+                Intent intentProfile = new Intent(MyEventActivity.this, ContactActivity.class);
+                startActivity(intentProfile);
+                break;
+            }
         }
         return super.onOptionsItemSelected(item);
     }

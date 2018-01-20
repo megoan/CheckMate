@@ -3,6 +3,7 @@ package com.example.user.check_mate.model.backend;
 import android.graphics.Bitmap;
 
 import com.example.user.check_mate.model.entities.Gender;
+import com.example.user.check_mate.model.entities.Message;
 import com.example.user.check_mate.model.entities.MyLocation;
 import com.example.user.check_mate.model.entities.Events;
 import com.example.user.check_mate.model.entities.Person;
@@ -29,7 +30,9 @@ public interface BackEndFunc {
     public boolean removePersonFromEvent(String eventID, String personID);
     public boolean addPersonToEvent(String eventID, String personID);
     public boolean addPersonToEvent(Events event, Person person);
+    public boolean addPersonToEvent(String eventID, Person person);
 
+    public boolean sendMessage(Message message, String title);
 
     public ArrayList<Person> getAllPeople();
     public ArrayList<Person> getAllPeopleByGender(Gender gender);

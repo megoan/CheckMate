@@ -9,6 +9,7 @@ import com.example.user.check_mate.controller.Me;
 import com.example.user.check_mate.model.datasource.ListDataSource;
 import com.example.user.check_mate.model.entities.Events;
 import com.example.user.check_mate.model.entities.Gender;
+import com.example.user.check_mate.model.entities.Message;
 import com.example.user.check_mate.model.entities.MyLocation;
 import com.example.user.check_mate.model.entities.Person;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -92,6 +93,13 @@ public class BackendForFirebase implements BackEndFunc {
 
     @Override
     public boolean deletePerson(String userName) {
+
+        database = FirebaseDatabase.getInstance();
+        ref = database.getReference();
+        userRef=ref.child("people").child(userName);
+        userRef.removeValue();
+        StorageReference ref=storageReference.child("images/"+userName);
+        ref.delete();
         return false;
     }
 
@@ -155,6 +163,24 @@ public class BackendForFirebase implements BackEndFunc {
     }
 
     @Override
+    public boolean addPersonToEvent(String eventID, Person person) {
+        database = FirebaseDatabase.getInstance();
+        ref=database.getReference().child("peopleAtEvent").child(eventID).child(person.get_id());
+        ref.setValue(person);
+        return false;
+    }
+
+    @Override
+    public boolean sendMessage(Message message, String title) {
+        database = FirebaseDatabase.getInstance();
+        ref=database.getReference().child("messages").child(title);
+        postId= ref.push().getKey();
+        ref.child(postId).setValue(message);
+        return false;
+    }
+
+
+    @Override
     public ArrayList<Person> getAllPeople() {
         return null;
     }
@@ -208,4 +234,6 @@ public class BackendForFirebase implements BackEndFunc {
         return 6366000 * tt;
 
     }
+
+
 }

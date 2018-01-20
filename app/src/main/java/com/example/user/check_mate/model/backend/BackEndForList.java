@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 
 import com.example.user.check_mate.model.datasource.ListDataSource;
 import com.example.user.check_mate.model.entities.Gender;
+import com.example.user.check_mate.model.entities.Message;
 import com.example.user.check_mate.model.entities.MyLocation;
 import com.example.user.check_mate.model.entities.Events;
 import com.example.user.check_mate.model.entities.Person;
@@ -222,6 +223,16 @@ public class BackEndForList implements BackEndFunc {
 
     @Override
     public boolean addPersonToEvent(Events event, Person person) {
+        return false;
+    }
+
+    @Override
+    public boolean addPersonToEvent(String eventID, Person person) {
+        return false;
+    }
+
+    @Override
+    public boolean sendMessage(Message message, String title) {
         return false;
     }
 

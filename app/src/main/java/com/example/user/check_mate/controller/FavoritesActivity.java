@@ -83,12 +83,13 @@ public class FavoritesActivity extends AppCompatActivity {
         personAdapter = new FavoritePersonAdapter(this);
         personRecyclerView.setAdapter(personAdapter);
         getSupportActionBar().setTitle(R.string.my_favorites);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
    /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.event_manu, menu);
         return super.onCreateOptionsMenu(menu);
-    }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -97,17 +98,9 @@ public class FavoritesActivity extends AppCompatActivity {
                 finish();
                 return true;
             }
-            case R.id.profile_item: {
-                Intent intentProfile = new Intent(FavoritesActivity.this, EditProfileActivity.class);
-                startActivity(intentProfile);
-            }
-            case R.id.favorites: {
-                Intent intentProfile = new Intent(FavoritesActivity.this, FavoritesActivity.class);
-                startActivity(intentProfile);
-            }
         }
         return super.onOptionsItemSelected(item);
-    }*/
+    }
 
     public class FavoritePersonAdapter extends RecyclerView.Adapter<FavoritePersonAdapter.MyViewHolder> {
 

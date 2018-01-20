@@ -192,12 +192,8 @@ public class GetStartedActivity extends AppCompatActivity {
 
     private void selectImage() {
         final CharSequence[] items = {getString(R.string.take_photo), getString(R.string.choose_from_library)};
-
         AlertDialog.Builder builder = new AlertDialog.Builder(GetStartedActivity.this);
         builder.setTitle(R.string.add_photo);
-
-
-
         int checkedItem = 0; // cow
         builder.setSingleChoiceItems(items, checkedItem, new DialogInterface.OnClickListener() {
             @Override
@@ -229,27 +225,6 @@ public class GetStartedActivity extends AppCompatActivity {
                 dialogInterface.dismiss();
             }
         });
-
-        /*builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                boolean result= Utility.checkPermission(GetStartedActivity.this);
-
-                if (items[item].equals(getString(R.string.take_photo))) {
-                    userChosenTask =getString(R.string.take_photo);
-                    if(result)
-                        cameraIntent();
-
-                } else if (items[item].equals(getString(R.string.choose_from_library))) {
-                    userChosenTask =getString(R.string.choose_from_library);
-                    if(result)
-                        galleryIntent();
-
-                } else if (items[item].equals( getString(R.string.cancel))) {
-                    dialog.dismiss();
-                }
-            }
-        });*/
         builder.show();
     }
     private void galleryIntent()

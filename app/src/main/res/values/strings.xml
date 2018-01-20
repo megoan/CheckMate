@@ -55,4 +55,17 @@
     <string name="click_on_the_image_to_change_it">click on the image to change it</string>
     <string name="click_the_camera_icon_to_select_an_image">click the camera icon to select an image</string>
     <string name="there_are_no_events_in_your_location">there are no events in your location</string>
+    <string name="your_message">Your message</string>
+    <string name="send">send</string>
+    <string name="delete_account_message">are you sure you want to delete your account   your information will be deleted and the app will close</string>
+    <string name="cant_leave_message_empty">can\'t leave message empty</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="we_d">We\'d</string>
+    <string name="to_help">to help</string>
+    <string-array name="contact_options">
+        <item>Report Error</item>
+        <item>Have any ideas to share</item>
+        <item>Just say hi</item>
+        <item>Delete account</item>
+    </string-array>
 </resources>

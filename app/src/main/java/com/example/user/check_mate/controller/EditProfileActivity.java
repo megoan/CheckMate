@@ -14,16 +14,19 @@ import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 
 import com.example.user.check_mate.R;
 import com.example.user.check_mate.model.backend.BackEndFunc;
+import com.example.user.check_mate.model.backend.DataSourceType;
 import com.example.user.check_mate.model.backend.FactoryMethod;
 import com.example.user.check_mate.model.backend.SelectedDataSource;
 import com.example.user.check_mate.model.entities.Gender;
@@ -58,11 +61,13 @@ public class EditProfileActivity extends AppCompatActivity {
     Intent CropIntent;
     Button getStartedButton;
     BackEndFunc backEndFunc= FactoryMethod.getBackEndFunc(SelectedDataSource.dataSourceType);
+
     boolean imageSelected=false;
     Bitmap mBitmap;
     StorageReference storageReference;
     FirebaseStorage storage;
     ProgressBar loadImageProgress;
+    private BackEndFunc backEndFuncForFirebase=FactoryMethod.getBackEndFunc(DataSourceType.DATA_INTERNET);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +83,7 @@ public class EditProfileActivity extends AppCompatActivity {
         getStartedButton=findViewById(R.id.getStartedButton);
         imageView=findViewById(R.id.imageView);
         getSupportActionBar().setTitle(R.string.update_profile);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         Integer[] items = new Integer[81];
@@ -180,7 +185,16 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
     }
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home: {
+                finish();
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
     public void updateFireBase()
     {
         if(imageSelected)
@@ -212,6 +226,10 @@ public class EditProfileActivity extends AppCompatActivity {
                     editor.putString("EVENTID",Me.ME.getEventId());
                     editor.putString("KASHUR",Me.ME.getKashur());
                     editor.commit();
+                    if (Me.ME.isAtEvent()) {
+                        backEndFuncForFirebase.removePersonFromEvent(Me.ME.getEventId(), Me.ME.get_id());
+                        backEndFuncForFirebase.addPersonToEvent(Me.ME.getEventId(), Me.ME);
+                    }
                 }
             });
         }
@@ -230,6 +248,10 @@ public class EditProfileActivity extends AppCompatActivity {
             editor.putString("EVENTID",Me.ME.getEventId());
             editor.putString("KASHUR",Me.ME.getKashur());
             editor.commit();
+            if (Me.ME.isAtEvent()) {
+                backEndFuncForFirebase.removePersonFromEvent(Me.ME.getEventId(), Me.ME.get_id());
+                backEndFuncForFirebase.addPersonToEvent(Me.ME.getEventId(), Me.ME);
+            }
         }
     }
 
@@ -266,29 +288,38 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void selectImage() {
-        final CharSequence[] items = { getString(R.string.take_photo), getString(R.string.choose_from_library),
-                getString(R.string.cancel) };
-
+        final CharSequence[] items = {getString(R.string.take_photo), getString(R.string.choose_from_library)};
         AlertDialog.Builder builder = new AlertDialog.Builder(EditProfileActivity.this);
         builder.setTitle(R.string.add_photo);
-        builder.setItems(items, new DialogInterface.OnClickListener() {
+        int checkedItem = 0; // cow
+        builder.setSingleChoiceItems(items, checkedItem, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int item) {
+            public void onClick(DialogInterface dialog, int which) {
+                // user checked an item
+            }
+        });
+        builder.setPositiveButton("OK",new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
                 boolean result= Utility.checkPermission(EditProfileActivity.this);
-
-                if (items[item].equals(getString(R.string.take_photo))) {
-                    userChosenTask =getString(R.string.take_photo);
+                ListView lw = ((AlertDialog) dialog).getListView();
+                Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
+                if (checkedItem == getString(R.string.take_photo)) {
+                    userChosenTask = getString(R.string.take_photo);
                     if(result)
                         cameraIntent();
-
-                } else if (items[item].equals(getString(R.string.choose_from_library))) {
+                }
+                else {
                     userChosenTask =getString(R.string.choose_from_library);
                     if(result)
                         galleryIntent();
-
-                } else if (items[item].equals( getString(R.string.cancel))) {
-                    dialog.dismiss();
                 }
+            }
+        });
+        builder.setNegativeButton("cancel", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
             }
         });
         builder.show();
