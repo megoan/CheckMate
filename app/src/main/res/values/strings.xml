@@ -47,7 +47,7 @@
     <string name="send_info_to_friend">send info to friend</string>
     <string name="hi_what_do_you_think">HI, what do you think?</string>
     <string name="hi_i_saw">HI, I saw </string>
-    <string name="at_the_wedding_can_you_send_more_info_please">at the event. can u send me more info please?</string>
+    <string name="at_the_wedding_can_you_send_more_info_please"> at the event. can u send me more info please?</string>
     <string name="get_more_info">get more info</string>
     <string name="send_info">Send info:</string>
     <string name="loading_events">Loading events...</string>
@@ -57,15 +57,23 @@
     <string name="there_are_no_events_in_your_location">there are no events in your location</string>
     <string name="your_message">Your message</string>
     <string name="send">send</string>
-    <string name="delete_account_message">are you sure you want to delete your account   your information will be deleted and the app will close</string>
+    <string name="delete_account_message">are you sure you want to delete your account? your information will be deleted and the app will close</string>
     <string name="cant_leave_message_empty">can\'t leave message empty</string>
     <string name="contact_us">Contact Us</string>
     <string name="we_d">We\'d</string>
     <string name="to_help">to help</string>
+    <string name="delete_account">Delete account</string>
+    <string name="updating">Updating...</string>
+    <string name="deleting">Deleting...</string>
+    <string name="gettingStarted">Getting Started...</string>
+    <string name="joining_event">Joining event...</string>
+    <string name="location_enabled_by_user">Location enabled by user!</string>
+    <string name="location_not_enabled_user_cancelled">Location not enabled, user cancelled.</string>
+    <string name="turn_on_gps">turn on gps</string>
+    <string name="to_use_the_app_you_must_turn_on_your_gps">to use the app you must turn on your gps</string>
     <string-array name="contact_options">
         <item>Report Error</item>
         <item>Have any ideas to share</item>
         <item>Just say hi</item>
-        <item>Delete account</item>
     </string-array>
 </resources>

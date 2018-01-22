@@ -55,6 +55,8 @@ public class SplashActivity extends AppCompatActivity {
             Me.ME.setAtEvent(sharedPreferences.getBoolean("ATEVENT",false));
             Me.ME.setEventId(sharedPreferences.getString("EVENTID",null));
             Me.ME.setKashur(sharedPreferences.getString("KASHUR",null));
+            Me.ME.setEventCity(sharedPreferences.getString("EVENTCITY",null));
+            Me.ME.setEventCountry(sharedPreferences.getString("EVENTCOUNTRY",null));
 
             Intent intent =new Intent(SplashActivity.this,MainActivity.class);
             //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

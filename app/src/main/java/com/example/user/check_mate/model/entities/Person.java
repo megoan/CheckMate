@@ -14,13 +14,15 @@ public class Person {
     private String aboutMe;
     private String kashur;
     private String eventId;
+    private String eventCountry;
+    private String eventCity;
     private boolean atEvent;
     private String _id;
 
     public Person() {
     }
 
-    public Person(String name, int age, Gender gender, String imageUrl, String aboutMe, String kashur, String eventId, boolean atEvent, String firebaseID) {
+    public Person(String name, int age, Gender gender, String imageUrl, String aboutMe, String kashur, String eventId, String eventCountry, String eventCity, boolean atEvent, String _id) {
         this.name = name;
         this.age = age;
         this.gender = gender;
@@ -28,8 +30,10 @@ public class Person {
         this.aboutMe = aboutMe;
         this.kashur = kashur;
         this.eventId = eventId;
+        this.eventCountry = eventCountry;
+        this.eventCity = eventCity;
         this.atEvent = atEvent;
-        this._id = firebaseID;
+        this._id = _id;
     }
 
     public Person(Person other) {
@@ -38,9 +42,10 @@ public class Person {
         this.gender = other.gender;
         this.imageUrl = other.imageUrl;
         this.aboutMe = other.aboutMe;
-        this._id = other._id;
         this.kashur = other.kashur;
         this.eventId = other.eventId;
+        this.eventCountry = other.eventCountry;
+        this.eventCity = other.eventCity;
         this.atEvent = other.atEvent;
         this._id = other._id;
     }
@@ -73,8 +78,8 @@ public class Person {
         return imageUrl;
     }
 
-    public void setImageUrl(String image) {
-        this.imageUrl = image;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getAboutMe() {
@@ -83,14 +88,6 @@ public class Person {
 
     public void setAboutMe(String aboutMe) {
         this.aboutMe = aboutMe;
-    }
-
-    public String get_id() {
-        return _id;
-    }
-
-    public void set_id(String _id) {
-        this._id = _id;
     }
 
     public String getKashur() {
@@ -109,6 +106,22 @@ public class Person {
         this.eventId = eventId;
     }
 
+    public String getEventCountry() {
+        return eventCountry;
+    }
+
+    public void setEventCountry(String eventCountry) {
+        this.eventCountry = eventCountry;
+    }
+
+    public String getEventCity() {
+        return eventCity;
+    }
+
+    public void setEventCity(String eventCity) {
+        this.eventCity = eventCity;
+    }
+
     public boolean isAtEvent() {
         return atEvent;
     }
@@ -117,5 +130,11 @@ public class Person {
         this.atEvent = atEvent;
     }
 
+    public String get_id() {
+        return _id;
+    }
 
+    public void set_id(String _id) {
+        this._id = _id;
+    }
 }

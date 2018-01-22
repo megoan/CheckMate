@@ -122,27 +122,15 @@ public class GetStartedActivity extends AppCompatActivity {
                 else
                 {
                     try {
-                        backEndFunc.addPerson(Me.ME,mBitmap);
+                        backEndFunc.addPerson(Me.ME,mBitmap,GetStartedActivity.this);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    Intent intent =new Intent(GetStartedActivity.this,MainActivity.class);
-                    SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(GetStartedActivity.this);
-                    SharedPreferences.Editor editor=sharedPreferences.edit();
-                    editor.putString("ID",Me.ME.get_id());
-                    editor.putString("NAME",Me.ME.getName());
-                    editor.putString("GENDER", String.valueOf(Me.ME.getGender()));
-                    editor.putInt("AGE",Me.ME.getAge());
-                    editor.putString("IMAGEURL",Me.ME.getImageUrl());
-                    editor.putBoolean("ATEVENT",Me.ME.isAtEvent());
-                    editor.putString("EVENTID",Me.ME.getEventId());
-                    editor.putString("KASHUR",Me.ME.getKashur());
-                    editor.commit();
+                   /* Intent intent =new Intent(GetStartedActivity.this,MainActivity.class);
+
                     intent.putExtra("ID",Me.ME.get_id());
                     finish();
-                    startActivity(intent);
-
-
+                    startActivity(intent);*/
                 }
             }
         });
@@ -162,7 +150,7 @@ public class GetStartedActivity extends AppCompatActivity {
     public void inputWarningDialog(String message)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(GetStartedActivity.this);
-        builder.setTitle(R.string.invalid_input);
+        builder.setTitle(R.string.invalid_input).setIcon(R.drawable.ic_warning);;
         builder.setMessage(message);
         builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
             @Override

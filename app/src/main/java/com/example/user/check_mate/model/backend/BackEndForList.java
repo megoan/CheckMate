@@ -1,5 +1,7 @@
 package com.example.user.check_mate.model.backend;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 
 import com.example.user.check_mate.model.datasource.ListDataSource;
@@ -8,6 +10,7 @@ import com.example.user.check_mate.model.entities.Message;
 import com.example.user.check_mate.model.entities.MyLocation;
 import com.example.user.check_mate.model.entities.Events;
 import com.example.user.check_mate.model.entities.Person;
+import com.firebase.client.core.Context;
 
 import java.util.ArrayList;
 
@@ -22,14 +25,14 @@ public class BackEndForList implements BackEndFunc {
     public BackEndForList() {
 
         try {
-            initializeLists();
+           // initializeLists();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private void initializeLists() throws Exception {
-        Person person = new Person("shmuel", 26, Gender.MALE, null, "about me", "kashur","fdgsdfg",true,"fdsgdfvg");
+        /*Person person = new Person("shmuel", 26, Gender.MALE, null, "about me", "kashur","fdgsdfg",true,"fdsgdfvg");
         // person.set_id(1);
         addPerson(person);
 
@@ -89,11 +92,11 @@ public class BackEndForList implements BackEndFunc {
         eventP4.add("5");
         eventP4.add("6");
         events4.setPeopleAtevent(eventP4);
-        addEvent(events4);
+        addEvent(events4);*/
     }
 
     @Override
-    public boolean addPerson(Person person, Bitmap mBitmap) throws Exception {
+    public boolean addPerson(Person person, Bitmap mBitmap, android.content.Context context) throws Exception {
         return false;
     }
 
@@ -107,28 +110,18 @@ public class BackEndForList implements BackEndFunc {
     }
 
     @Override
-    public boolean updatePerson(Person person) {
-        for (int i = 0; i < ListDataSource.personList.size(); i++) {
-            if (ListDataSource.personList.get(i).get_id()==person.get_id()) {
-                ListDataSource.personList.set(i, person);
-                return true;
-            }
-        }
+    public boolean updatePerson(Person person, android.content.Context context, boolean finishActivity) {
         return false;
     }
 
+
+
     @Override
-    public boolean deletePerson(String userName) {
-        Person personTmp = null;
-        for (Person person : ListDataSource.personList
-                ) {
-            if (person.get_id().equals(userName)) {
-                personTmp = person;
-                break;
-            }
-        }
-        return ListDataSource.personList.remove(personTmp);
+    public boolean deletePerson(String userName, android.content.Context context) {
+        return false;
     }
+
+
 
     @Override
     public Person getPerson(String userName) {
@@ -199,16 +192,10 @@ public class BackEndForList implements BackEndFunc {
     }
 
     @Override
-    public boolean removePersonFromEvent(String eventID, String personID) {
-        for (Events events : ListDataSource.eventsList) {
-            if (events.getFirebaseID().equals(eventID)) {
-                events.removePersonFromEvent(personID);
-                updateEvent(events);
-                return true;
-            }
-        }
+    public boolean removePersonFromEvent(Person person, android.content.Context context, boolean finishActivity) {
         return false;
     }
+
 
     @Override
     public boolean addPersonToEvent(String eventID, String personID) {
@@ -230,6 +217,22 @@ public class BackEndForList implements BackEndFunc {
     public boolean addPersonToEvent(String eventID, Person person) {
         return false;
     }
+
+    @Override
+    public boolean removeAndAddPersonToEvent(String eventID, Person person, android.content.Context context) {
+        return false;
+    }
+
+    @Override
+    public boolean removeAndAddPersonToEventAndEnterActivity(Person person, Events events, android.content.Context context, Intent intent, ProgressDialog progressDialog) {
+        return false;
+    }
+
+    @Override
+    public boolean addPersonToEventAndEnterActivity(Events events, Person person, android.content.Context context, Intent intent, ProgressDialog progressDialog) {
+        return false;
+    }
+
 
     @Override
     public boolean sendMessage(Message message, String title) {

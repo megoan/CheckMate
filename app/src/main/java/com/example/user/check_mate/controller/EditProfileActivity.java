@@ -1,11 +1,13 @@
 package com.example.user.check_mate.controller;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.StrictMode;
@@ -173,7 +175,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    finish();
+                    //finish();
                 }
             }
         });
@@ -197,12 +199,19 @@ public class EditProfileActivity extends AppCompatActivity {
     }
     public void updateFireBase()
     {
+        ProgressDialog progDailog = new ProgressDialog(this);
+        progDailog.setMessage(getString(R.string.updating));
+        progDailog.setIndeterminate(false);
+        progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progDailog.setCancelable(false);
+        progDailog.show();
         if(imageSelected)
         {
             storage=FirebaseStorage.getInstance();
             storageReference=storage.getReference();
             StorageReference ref=storageReference.child("images/"+Me.ME.get_id());
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            mBitmap=getResizedBitmap(mBitmap,200,200);
             mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             byte[] data = baos.toByteArray();
             UploadTask uploadTask = ref.putBytes(data);
@@ -212,7 +221,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     Uri downloadUrl = taskSnapshot.getDownloadUrl();
                     String url=downloadUrl.toString();
                     Me.ME.setImageUrl(url);
-                    Person person =new Person(Me.ME.getName(),Me.ME.getAge(),Me.ME.getGender(),Me.ME.getImageUrl(),Me.ME.getAboutMe(),Me.ME.getKashur(),Me.ME.getEventId(),Me.ME.isAtEvent(),Me.ME.get_id());
+                    Person person =new Person(Me.ME.getName(),Me.ME.getAge(),Me.ME.getGender(),Me.ME.getImageUrl(),Me.ME.getAboutMe(),Me.ME.getKashur(),Me.ME.getEventId(),Me.ME.getEventCountry(),Me.ME.getEventCity(),Me.ME.isAtEvent(),Me.ME.get_id());
                     DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("people").child(Me.ME.get_id());
                     databaseReference.setValue(person);
                     SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(EditProfileActivity.this);
@@ -227,14 +236,18 @@ public class EditProfileActivity extends AppCompatActivity {
                     editor.putString("KASHUR",Me.ME.getKashur());
                     editor.commit();
                     if (Me.ME.isAtEvent()) {
-                        backEndFuncForFirebase.removePersonFromEvent(Me.ME.getEventId(), Me.ME.get_id());
-                        backEndFuncForFirebase.addPersonToEvent(Me.ME.getEventId(), Me.ME);
+                        backEndFuncForFirebase.removeAndAddPersonToEvent(Me.ME.getEventId(),Me.ME,EditProfileActivity.this);
+                       // backEndFuncForFirebase.removePersonFromEvent(Me.ME.getEventId(), Me.ME.get_id());
+                       // backEndFuncForFirebase.addPersonToEvent(Me.ME.getEventId(), Me.ME);
+                    }
+                    else {
+                        finish();
                     }
                 }
             });
         }
         else {
-            Person person =new Person(Me.ME.getName(),Me.ME.getAge(),Me.ME.getGender(),Me.ME.getImageUrl(),Me.ME.getAboutMe(),Me.ME.getKashur(),Me.ME.getEventId(),Me.ME.isAtEvent(),Me.ME.get_id());
+            Person person =new Person(Me.ME.getName(),Me.ME.getAge(),Me.ME.getGender(),Me.ME.getImageUrl(),Me.ME.getAboutMe(),Me.ME.getKashur(),Me.ME.getEventId(),Me.ME.getEventCountry(),Me.ME.getEventCity(),Me.ME.isAtEvent(),Me.ME.get_id());
             DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("people").child(Me.ME.get_id());
             databaseReference.setValue(person);
             SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(EditProfileActivity.this);
@@ -247,10 +260,16 @@ public class EditProfileActivity extends AppCompatActivity {
             editor.putBoolean("ATEVENT",Me.ME.isAtEvent());
             editor.putString("EVENTID",Me.ME.getEventId());
             editor.putString("KASHUR",Me.ME.getKashur());
+            editor.putString("EVENTCOUNTRY",Me.ME.getEventCountry());
+            editor.putString("EVENTCITY",Me.ME.getEventCity());
             editor.commit();
             if (Me.ME.isAtEvent()) {
-                backEndFuncForFirebase.removePersonFromEvent(Me.ME.getEventId(), Me.ME.get_id());
-                backEndFuncForFirebase.addPersonToEvent(Me.ME.getEventId(), Me.ME);
+                backEndFuncForFirebase.removeAndAddPersonToEvent(Me.ME.getEventId(),Me.ME,EditProfileActivity.this);
+             //   backEndFuncForFirebase.removePersonFromEvent(Me.ME.getEventId(), Me.ME.get_id());
+             //   backEndFuncForFirebase.addPersonToEvent(Me.ME.getEventId(), Me.ME);
+            }
+          else {
+                finish();
             }
         }
     }
@@ -259,7 +278,7 @@ public class EditProfileActivity extends AppCompatActivity {
     public void inputWarningDialog(String message)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(EditProfileActivity.this);
-        builder.setTitle(getString(R.string.invalid_input));
+        builder.setTitle(getString(R.string.invalid_input)).setIcon(R.drawable.ic_warning);
         builder.setMessage(message);
         builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
             @Override
@@ -372,5 +391,21 @@ public class EditProfileActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+    public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // CREATE A MATRIX FOR THE MANIPULATION
+        Matrix matrix = new Matrix();
+        // RESIZE THE BIT MAP
+        matrix.postScale(scaleWidth, scaleHeight);
+
+        // "RECREATE" THE NEW BITMAP
+        Bitmap resizedBitmap = Bitmap.createBitmap(
+                bm, 0, 0, width, height, matrix, false);
+        bm.recycle();
+        return resizedBitmap;
     }
 }

@@ -13,7 +13,7 @@
     <string name="event_name">שם האירוע</string>
     <string name="please_don_t_add_unnecessary_events">נא אל תוסיף אירועים ללא צורך</string>
     <string name="add_your_event">הוסף אירוע</string>
-    <string name="your_location_is_loading">מיקומך נטען</string>
+    <string name="your_location_is_loading">מיקומך נטען...</string>
     <string name="my_name">שם</string>
     <string name="female">נקבה</string>
     <string name="get_started">התחל</string>
@@ -40,7 +40,7 @@
     <string name="dont_leave_name_empty">אי אפשר להשאיר שם ריק!</string>
     <string name="cant_leave_field_empty">אי אפשר להשאיר שדה ריק!</string>
     <string name="my_location">המיקום שלי...</string>
-    <string name="add_new_event_in_my_location">הוסף אירוע חדש במקום שלי</string>
+    <string name="add_new_event_in_my_location">הוסף אירוע חדש במיקום שלי</string>
     <string name="my_favorites">רשימת מועדפים</string>
     <string name="event">אירוע</string>
     <string name="was_added_to_your_favorites">נוסף לרשימת מועדפים</string>
@@ -62,11 +62,19 @@
         <item>דוח על שגיאה</item>
         <item>יש לך ראיונות לשתף</item>
         <item>סתם שלום</item>
-        <item>מחק/י חשבון</item>
     </string-array>
     <string name="delete_account_message">האם אתה בטוח שתרצה/י לסמחוק את המשתמש שלך?   במידה וכן פרטיך ימחקו והאפליקצייה תסגר</string>
     <string name="cant_leave_message_empty">לא תוכל/י להשאיר את ההודעה ריק</string>
     <string name="contact_us">צור קשר</string>
     <string name="we_d">אנו</string>
     <string name="to_help">לשמוע ולעזור</string>
+    <string name="delete_account">מחק/י חשבון</string>
+    <string name="updating">מעדכן נתונים...</string>
+    <string name="deleting">מבצע מחיקה...</string>
+    <string name="gettingStarted">מתחיל אוטוטו...</string>
+    <string name="joining_event">מצטרף לאירוע...</string>
+    <string name="location_enabled_by_user">Location enabled by user!</string>
+    <string name="location_not_enabled_user_cancelled">Location not enabled, user cancelled.</string>
+    <string name="turn_on_gps">הפעל את הGPS</string>
+    <string name="to_use_the_app_you_must_turn_on_your_gps">כדי להשתמש באפליקציה עליך להפעיל את הGPS</string>
 </resources>

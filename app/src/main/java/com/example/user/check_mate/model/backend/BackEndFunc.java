@@ -1,5 +1,7 @@
 package com.example.user.check_mate.model.backend;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 
 import com.example.user.check_mate.model.entities.Gender;
@@ -7,6 +9,7 @@ import com.example.user.check_mate.model.entities.Message;
 import com.example.user.check_mate.model.entities.MyLocation;
 import com.example.user.check_mate.model.entities.Events;
 import com.example.user.check_mate.model.entities.Person;
+import com.firebase.client.core.Context;
 
 import java.util.ArrayList;
 
@@ -16,10 +19,10 @@ import java.util.ArrayList;
 
 public interface BackEndFunc {
 
-    public boolean addPerson(Person person, Bitmap mBitmap) throws Exception;
+    public boolean addPerson(Person person, Bitmap mBitmap, android.content.Context context) throws Exception;
     public boolean addPerson(Person person) throws Exception;
-    public boolean updatePerson(Person person);
-    public boolean deletePerson(String userName);
+    public boolean updatePerson(Person person, android.content.Context context, boolean finishActivity);
+    public boolean deletePerson(String userName, android.content.Context context);
     public Person getPerson(final String id);
     public Person getPerson(int id);
 
@@ -27,11 +30,13 @@ public interface BackEndFunc {
     public boolean updateEvent(Events events);
     public boolean deleteEvent(String eventName);
     public Events getEvent(String eventName);
-    public boolean removePersonFromEvent(String eventID, String personID);
+    public boolean removePersonFromEvent(Person person, android.content.Context context,boolean finishActivity);
     public boolean addPersonToEvent(String eventID, String personID);
     public boolean addPersonToEvent(Events event, Person person);
     public boolean addPersonToEvent(String eventID, Person person);
-
+    public boolean removeAndAddPersonToEvent(String eventID, Person person, android.content.Context context);
+    public boolean removeAndAddPersonToEventAndEnterActivity(Person person, Events events, android.content.Context context, Intent intent, ProgressDialog progressDialog);
+    public boolean addPersonToEventAndEnterActivity(Events events, Person person, android.content.Context context,Intent intent,ProgressDialog progressDialog);
     public boolean sendMessage(Message message, String title);
 
     public ArrayList<Person> getAllPeople();

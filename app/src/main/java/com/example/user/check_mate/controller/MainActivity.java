@@ -1,6 +1,7 @@
 package com.example.user.check_mate.controller;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -62,6 +63,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -103,6 +105,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     String id;
     Events events3;
     LinearLayout linearLayout;
+
+    FrameLayout frameLayoutGPSTURNON;
+    Button turnOnGPSButton;
     //private Bitmap bitmap;
     FirebaseStorage storage;
     boolean stillLoading = false;
@@ -171,6 +176,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         locationText = findViewById(R.id.locationText);
         addEventButton = findViewById(R.id.addEvent);
         frameLayout = findViewById(R.id.refreshGPS);
+        frameLayoutGPSTURNON=findViewById(R.id.turnOnGpsLayout);
+        turnOnGPSButton=findViewById(R.id.turnOnGpsButton);
         linearLayout = findViewById(R.id.loadingEvents);
 
         eventRecyclerView.setHasFixedSize(true);
@@ -228,13 +235,37 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         btnLoc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                switchOnGPS();
                 if (googleApiClient != null) {
                     googleApiClient.connect();
                 }
+
             }
         });
 
         userID = Me.ME.get_id();
+
+        turnOnGPSButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int i=0;
+                i++;
+                if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                    }, MY_PERMISSION_REQUEST_CODE);
+                } else {
+                    switchOnGPS();
+                }
+
+               // if( mRequestLocationUpdates){
+
+               // }
+            }
+        });
+
 
         addEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -323,6 +354,36 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 startActivity(intentProfile);
                 break;
             }
+            case R.id.delete_account:{
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+                builder.setTitle(R.string.delete_account);
+
+                builder.setMessage(R.string.delete_account_message);
+
+                builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                        SharedPreferences.Editor editor=sharedPreferences.edit();
+                        editor.clear();
+                        editor.commit();
+                        backEndFuncForFirebase.deletePerson(Me.ME.get_id(),MainActivity.this);
+
+
+                    }
+                });
+
+                builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                AlertDialog alert = builder.create();
+                alert.show();
+                break;
+            }
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -470,10 +531,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                                 if (connectedView.getText().toString() == null || connectedView.getText().toString().length() == 0) {
                                     Toast.makeText(MainActivity.this, R.string.cant_leave_field_empty, Toast.LENGTH_LONG).show();
                                 } else {
-                                    if (Me.ME.isAtEvent()) {
-                                        backEndFuncForFirebase.removePersonFromEvent(Me.ME.getEventId(), Me.ME.get_id());
-                                    }
-
+                                    alertDialog.dismiss();
+                                    ProgressDialog progDailog = new ProgressDialog(MainActivity.this);
+                                    progDailog.setMessage(getString(R.string.joining_event));
+                                    progDailog.setIndeterminate(false);
+                                    progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                                    progDailog.setCancelable(false);
+                                    progDailog.show();
                                     Intent intent = new Intent(MainActivity.this, MyEventActivity.class);
                                     intent.putExtra("id", event.getFirebaseID());
                                     intent.putExtra("name", event.getEventName());
@@ -485,16 +549,19 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                                     }
                                     array[event.getPeopleAtevent().size()] = Me.ME.get_id();
                                     intent.putExtra("atEvent", array);
+
+
+                                    if (Me.ME.isAtEvent()) {
+                                        backEndFuncForFirebase.removeAndAddPersonToEventAndEnterActivity(Me.ME,event,MainActivity.this,intent,progDailog);
+                                    }
+                                    else {
+                                        backEndFuncForFirebase.addPersonToEventAndEnterActivity(event,Me.ME,MainActivity.this,intent,progDailog);
+                                    }
                                     Me.ME.setEventId(event.getFirebaseID());
                                     Me.ME.setKashur(connectedView.getText().toString());
                                     Me.ME.setAtEvent(true);
-
-                                    backEndFuncForFirebase.addPersonToEvent(event, Me.ME);
-                                    backEndFuncForFirebase.updatePerson(Me.ME);
-                                    //backEndFunc.updateEvent(event);
-                                    //backEndFunc.updatePerson(Me.ME);
-                                    alertDialog.dismiss();
-
+                                    Me.ME.setEventCountry(event.getmMyLocation().getCountry());
+                                    Me.ME.setEventCity(event.getmMyLocation().getCity());
                                     SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
                                     SharedPreferences.Editor editor = sharedPreferences.edit();
                                     editor.putString("ID", Me.ME.get_id());
@@ -505,8 +572,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                                     editor.putBoolean("ATEVENT", Me.ME.isAtEvent());
                                     editor.putString("EVENTID", Me.ME.getEventId());
                                     editor.putString("KASHUR", Me.ME.getKashur());
+                                    editor.putString("EVENTCOUNTRY",Me.ME.getEventCountry());
+                                    editor.putString("EVENTCITY",Me.ME.getEventCity());
                                     editor.commit();
-                                    startActivity(intent);
                                 }
                             }
                         });
@@ -540,6 +608,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         }
     }
+
+
 
     @Override
     public void onBackPressed() {
@@ -678,31 +748,68 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     @Override
     protected void onStart() {
+        switchOnGPS();
         super.onStart();
         if (googleApiClient != null) {
             googleApiClient.connect();
         }
+        Log.d("Tag","sdfkjdsfgkdljhgdgfsgdfgjdskfhgdsfgsfdgfdg");
         // getGoogleLocation();
     }
 
     @Override
     protected void onStop() {
 
-        if(googleApiClient.isConnected()) {
-            LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
-            if (googleApiClient != null) {
-                googleApiClient.disconnect();
+        if (googleApiClient!=null) {
+            if(googleApiClient.isConnected()) {
+                LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
+                if (googleApiClient != null) {
+                    googleApiClient.disconnect();
+                }
             }
         }
+        Log.d("Tag","sdfkjdsfgkdljhgdgfsgdfgjdskfhgdsfgsfdgfdg");
         super.onStop();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        switchOnGPS();
-    }
 
+        Log.d("Tag","sdfkjdsfgkdljhgdgfsgdfgjdskfhgdsfgsfdgfdg");
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        Log.d("onActivityResult()", Integer.toString(resultCode));
+
+        //final LocationSettingsStates states = LocationSettingsStates.fromIntent(data);
+        switch (requestCode)
+        {
+            case 11:
+                switch (resultCode)
+                {
+                    case Activity.RESULT_OK:
+                    {
+                        frameLayoutGPSTURNON.setVisibility(View.GONE);
+                        // All required changes were successfully made
+                        Toast.makeText(this, R.string.location_enabled_by_user, Toast.LENGTH_LONG).show();
+                        break;
+                    }
+                    case Activity.RESULT_CANCELED:
+                    {
+                        // The user was asked to change settings, but chose not to
+                        Toast.makeText(this, R.string.location_not_enabled_user_cancelled, Toast.LENGTH_LONG).show();
+                        break;
+                    }
+                    default:
+                    {
+                        break;
+                    }
+                }
+                break;
+        }
+    }
     private void switchOnGPS() {
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
                 .addLocationRequest(new LocationRequest().setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY));
@@ -714,12 +821,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 try {
                     LocationSettingsResponse response = task.getResult(ApiException.class);
                     mRequestLocationUpdates = true;
+                    frameLayoutGPSTURNON.setVisibility(View.GONE);
                 } catch (ApiException e) {
                     switch (e.getStatusCode()) {
+                        case LocationSettingsStatusCodes.SUCCESS:{
+                            frameLayoutGPSTURNON.setVisibility(View.GONE);
+                            break;
+                        }
                         case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                             ResolvableApiException resolvableApiException = (ResolvableApiException) e;
                             try {
                                 resolvableApiException.startResolutionForResult(MainActivity.this, 11);
+
                             } catch (IntentSender.SendIntentException e1) {
                                 e1.printStackTrace();
                             }
@@ -734,6 +847,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         });
         //Give permission to access GPS
         ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 11);
+
     }
 }
 

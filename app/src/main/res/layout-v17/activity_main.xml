@@ -5,7 +5,29 @@
     android:layout_height="match_parent"
     tools:context="com.example.user.check_mate.controller.MainActivity"
     android:orientation="vertical">
-
+    <FrameLayout
+        android:id="@+id/turnOnGpsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/to_use_the_app_you_must_turn_on_your_gps"
+                android:layout_marginBottom="10dp"/>
+            <Button
+                android:id="@+id/turnOnGpsButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/turn_on_gps"
+                android:drawableLeft="@drawable/ic_open_gps"/>
+        </LinearLayout>
+    </FrameLayout>
     <FrameLayout
         android:id="@+id/refreshGPS"
         android:layout_width="match_parent"

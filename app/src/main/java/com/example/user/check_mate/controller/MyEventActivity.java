@@ -130,25 +130,7 @@ public class MyEventActivity extends AppCompatActivity {
                 builder.setPositiveButton(R.string.exit, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        backEndFuncForFirebase.removePersonFromEvent(Me.ME.getEventId(), Me.ME.get_id());
-                        Me.ME.setAtEvent(false);
-                        Me.ME.setEventId("");
-                        backEndFuncForFirebase.updatePerson(Me.ME);
-                        SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(MyEventActivity.this);
-                        SharedPreferences.Editor editor=sharedPreferences.edit();
-                        editor.putString("ID",Me.ME.get_id());
-                        editor.putString("NAME",Me.ME.getName());
-                        editor.putString("GENDER", String.valueOf(Me.ME.getGender()));
-                        editor.putInt("AGE",Me.ME.getAge());
-                        editor.putString("IMAGEURL",Me.ME.getImageUrl());
-                        editor.putBoolean("ATEVENT",Me.ME.isAtEvent());
-                        editor.putString("EVENTID",Me.ME.getEventId());
-                        editor.putString("KASHUR",Me.ME.getKashur());
-                        editor.commit();
-                        //ExitActivity.exitApplicationAndRemoveFromRecent(MyEventActivity.this);
-                        finish();
-
-
+                        backEndFuncForFirebase.removePersonFromEvent(Me.ME,MyEventActivity.this,true);
                     }
                 });
                 builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -189,6 +171,37 @@ public class MyEventActivity extends AppCompatActivity {
 
                 Intent intentProfile = new Intent(MyEventActivity.this, ContactActivity.class);
                 startActivity(intentProfile);
+                break;
+            }
+            case R.id.delete_account:{
+                AlertDialog.Builder builder = new AlertDialog.Builder(MyEventActivity.this);
+
+                builder.setTitle(getString(R.string.delete_account));
+
+                builder.setMessage(R.string.delete_account_message);
+
+                builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(MyEventActivity.this);
+                        SharedPreferences.Editor editor=sharedPreferences.edit();
+                        editor.clear();
+                        editor.commit();
+                        backEndFuncForFirebase.deletePerson(Me.ME.get_id(),MyEventActivity.this);
+                       /* finish();
+                        ExitActivity.exitApplicationAndRemoveFromRecent(MyEventActivity.this);
+                        System.exit(0);*/
+
+                    }
+                });
+
+                builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                AlertDialog alert = builder.create();
+                alert.show();
                 break;
             }
         }
@@ -622,7 +635,7 @@ public class MyEventActivity extends AppCompatActivity {
     public void initializeList() {
 
         people.clear();
-        DatabaseReference persontAtEvent = FirebaseDatabase.getInstance().getReference("peopleAtEvent").child(eventID);
+        DatabaseReference persontAtEvent = FirebaseDatabase.getInstance().getReference("peopleAtEvent").child(Me.ME.getEventCountry()).child(Me.ME.getEventCity()).child(eventID);
         persontAtEvent.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

@@ -68,43 +68,6 @@ public class ContactActivity extends AppCompatActivity {
                             spinnerSelection="Just say hi";
                             break;
                         }
-                        case "מחק/י חשבון":
-                        {
-
-                        }
-                        case "Delete account":
-                        {
-                            spinnerSelection="Delete account";
-                            AlertDialog.Builder builder = new AlertDialog.Builder(ContactActivity.this);
-
-                            builder.setTitle(spinnerSelection);
-
-                            builder.setMessage(R.string.delete_account_message);
-
-                            builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(ContactActivity.this);
-                                    SharedPreferences.Editor editor=sharedPreferences.edit();
-                                    editor.clear();
-                                    editor.commit();
-                                    backEndFuncForFirebase.deletePerson(Me.ME.get_id());
-                                    finish();
-                                    ExitActivity.exitApplicationAndRemoveFromRecent(ContactActivity.this);
-                                    System.exit(0);
-
-                                }
-                            });
-
-                            builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                }
-                            });
-                            AlertDialog alert = builder.create();
-                            alert.show();
-                            break;
-                        }
                     }
                     backEndFuncForFirebase.sendMessage(message,spinnerSelection);
                     finish();
@@ -125,7 +88,7 @@ public class ContactActivity extends AppCompatActivity {
     public void inputWarningDialog(String message)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(ContactActivity.this);
-        builder.setTitle(getString(R.string.invalid_input));
+        builder.setTitle(getString(R.string.invalid_input)).setIcon(R.drawable.ic_warning);
         builder.setMessage(message);
         builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
             @Override
