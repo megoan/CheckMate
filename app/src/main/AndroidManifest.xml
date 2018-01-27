@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.user.check_mate">
+    package="com.hionthefly.user.check_mate">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -9,9 +9,9 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!-- Needed only if your app targets Android 5.0 (API level 21) or higher. -->
     <uses-feature android:name="android.hardware.location.gps" />
-    android:name="android.support.multidex.MultiDexApplication"
-    <application
 
+    <application
+        android:name="android.support.multidex.MultiDexApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -24,33 +24,33 @@
             android:screenOrientation="portrait"
             android:theme="@style/Base.Theme.AppCompat" /> <!-- optional (needed if default theme has no action bar) -->
         <activity
-            android:name=".controller.MainActivity"
+            android:name="com.hionthefly.user.check_mate.controller.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".controller.LoginActivity"
+            android:name="com.hionthefly.user.check_mate.controller.LoginActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".controller.ExitActivity"
+            android:name="com.hionthefly.user.check_mate.controller.ExitActivity"
             android:noHistory="true"
             android:theme="@style/SplashTheme" />
         <activity
-            android:name=".controller.RegisterActivity"
+            android:name="com.hionthefly.user.check_mate.controller.RegisterActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".controller.GetStartedActivity"
+            android:name="com.hionthefly.user.check_mate.controller.GetStartedActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".controller.MyEventActivity"
+            android:name="com.hionthefly.user.check_mate.controller.MyEventActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".controller.MainActivity" />
+                android:value="com.hionthefly.user.check_mate.controller.MainActivity" />
         </activity>
         <activity
-            android:name=".controller.EditProfileActivity"
+            android:name="com.hionthefly.user.check_mate.controller.EditProfileActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".controller.SplashActivity"
+            android:name="com.hionthefly.user.check_mate.controller.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
@@ -60,9 +60,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".controller.FavoritesActivity"
+            android:name="com.hionthefly.user.check_mate.controller.FavoritesActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".controller.ContactActivity"></activity>
+        <activity android:name="com.hionthefly.user.check_mate.controller.ContactActivity"></activity>
     </application>
 
 </manifest>

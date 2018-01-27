@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.user.check_mate.controller.ContactActivity"
+    tools:context="com.hionthefly.user.check_mate.controller.ContactActivity"
     android:background="@drawable/gradient_grey">
 
     <android.support.constraint.ConstraintLayout

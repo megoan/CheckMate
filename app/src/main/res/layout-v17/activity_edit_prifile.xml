@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.user.check_mate.controller.EditProfileActivity"
+    tools:context="com.hionthefly.user.check_mate.controller.EditProfileActivity"
     tools:layout_editor_absoluteY="81dp"
     android:background="@drawable/gradient"
     android:focusableInTouchMode="true">
@@ -18,7 +18,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.example.user.check_mate.controller.EditProfileActivity"
+        tools:context="com.hionthefly.user.check_mate.controller.EditProfileActivity"
         tools:layout_editor_absoluteY="81dp"
         android:focusableInTouchMode="true">
 
@@ -51,13 +51,12 @@
                     android:src="@drawable/image_rim"
                     android:layout_width="206dp"
                     android:layout_height="206dp"
-
                     android:layout_margin="5dp"
                     android:layout_centerInParent="true"
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
-                    />
+                     />
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/imageView"
@@ -77,7 +76,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    android:visibility="gone"/>
+                    android:visibility="visible"/>
             </RelativeLayout>
             <TextView
                 android:layout_width="wrap_content"

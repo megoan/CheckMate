@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient"
     android:focusableInTouchMode="true"
-    tools:context="com.example.user.check_mate.controller.EditProfileActivity"
+    tools:context="com.hionthefly.user.check_mate.controller.EditProfileActivity"
     tools:layout_editor_absoluteY="81dp">
 
 
@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:focusableInTouchMode="true"
-        tools:context="com.example.user.check_mate.controller.EditProfileActivity"
+        tools:context="com.hionthefly.user.check_mate.controller.EditProfileActivity"
         tools:layout_editor_absoluteY="81dp">
 
         <!-- <ImageView

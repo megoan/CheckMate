@@ -16,13 +16,13 @@
         >
 
         <TextView
+            android:id="@+id/text1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/text1"
-            android:text="ben sdfdfds"
-            android:textSize="24sp"
+            android:layout_weight="1"
             android:padding="5dp"
-            android:layout_weight="1"/>
+            android:text="Suzanne and Michaels wedding"
+            android:textSize="24sp" />
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

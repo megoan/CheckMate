@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.user.check_mate.controller.GetStartedActivity"
+    tools:context="com.hionthefly.user.check_mate.controller.GetStartedActivity"
     tools:layout_editor_absoluteY="81dp"
     android:background="@drawable/gradient"
     android:focusableInTouchMode="true">
@@ -18,7 +18,7 @@ xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.user.check_mate.controller.GetStartedActivity"
+    tools:context="com.hionthefly.user.check_mate.controller.GetStartedActivity"
     tools:layout_editor_absoluteY="81dp"
     android:focusableInTouchMode="true">
 
